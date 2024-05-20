@@ -1,0 +1,18 @@
+{
+	"name": "GenAlpha Schematics Demo",
+	"image": "ghcr.io/gen-alpha-xtor/centos8:main",
+	"postCreateCommand": "bash .devcontainer/postcreate.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"gen-alpha-xtor.schematics-vscode"
+			],
+			"settings": {
+				"workbench.panel.defaultLocation": "left",
+				"workbench.editorAssociations": {
+					"*.md": "vscode.markdown.preview.editor"
+				}
+			}
+		}
+	}
+}
