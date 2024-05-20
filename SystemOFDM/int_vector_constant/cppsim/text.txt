@@ -1,0 +1,12 @@
+module: int_vector_constant
+description:  creates output vector with n(=length) integer elements downloaded from a file (vec_bit_settings.dat)
+parameters: int length
+inputs: 
+outputs:  IntVector vec_out
+static_variables:
+classes: List list1()
+set_output_vector_lengths: vec_out=length
+init:
+   list1.load("vec_bit_settings.dat");
+   copy(list1, vec_out);
+code:

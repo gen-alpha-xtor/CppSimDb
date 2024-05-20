@@ -1,0 +1,4 @@
+module: wb_synth
+sim_order: xi14 xi8 xi15 xi101 xi100 xi5 xi6
+xi0 xi1 xi2 xi3 xi12 xi13 xi4 xi17 xi10
+xi7 xi11 xi9 

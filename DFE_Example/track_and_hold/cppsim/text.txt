@@ -1,0 +1,22 @@
+module: track_and_hold
+description:
+parameters:
+inputs: double in double_interp clk
+outputs: double out
+classes: 
+EdgeDetect edge1();
+static_variables:
+init: 
+out = 0;
+code:
+    if (edge1.inp(clk))
+    {
+	out = in;
+    }
+    else
+    {
+	if (clk < 0.0)
+	{
+	    out = in;
+        }
+    }

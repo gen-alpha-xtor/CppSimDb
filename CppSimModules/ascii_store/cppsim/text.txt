@@ -1,0 +1,21 @@
+module: ascii_store
+parameters: int x
+inputs: double in
+outputs:
+classes: List a(); 
+static_variables: FILE *fp
+init:
+char filename[100];
+sprintf(filename,"sig_%d.dat",x);
+if ((fp = fopen(filename,"w")) == NULL)
+   {
+    printf("error in 'ascii_store': can't open file '%s'\n",filename);
+    exit(1);
+   }
+code:
+if (fabs(in-floor(in+0.5)) < 1e-6)
+   fprintf(fp,"%d\n",(int) in);
+else
+   fprintf(fp,"%8.6e\n",in);
+end:
+fclose(fp);

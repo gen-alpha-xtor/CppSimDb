@@ -1,0 +1,39 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module ofdm_receiver_parallel_to_serial(out_bit, clk_data, clk_frame, vec_bit_settings, vec_bits);
+
+   parameter num_channels = 0;
+   input clk_data;
+   input clk_frame;
+   input [31:0] vec_bit_settings;
+   input [31:0] vec_bits;
+   output [31:0] out_bit;
+
+   wreal clk_data;
+   real clk_data_rv;
+   wreal clk_frame;
+   real clk_frame_rv;
+   integer vec_bit_settings_iv;
+   integer vec_bits_iv;
+   integer out_bit_iv;
+
+   assign out_bit = out_bit_iv;
+
+   initial
+      begin
+        assign clk_data_rv = clk_data;
+        assign clk_frame_rv = clk_frame;
+        assign vec_bit_settings_iv = vec_bit_settings;
+        assign vec_bits_iv = vec_bits;
+      end
+
+   always
+      begin
+        #1
+        $ofdm_receiver_parallel_to_serial_cpp(clk_data_rv,clk_frame_rv,vec_bit_settings_iv,vec_bits_iv,out_bit_iv,num_channels);
+      end
+
+endmodule
+

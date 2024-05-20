@@ -1,0 +1,45 @@
+module: delay_intvector8
+description: design a time-delay filter for vectors: delta[n-delay]. delay must be an integer. 
+             delay each element of vector by "delay" samples
+             8 is the length of vector
+parameters: int delay 
+inputs: IntVector vec_in
+outputs: IntVector vec_out
+classes: Filter filt0("1-z^-1","1"), Filter filt1("1-z^-1","1"), Filter filt2("1-z^-1","1"), Filter filt3("1-z^-1","1")
+         Filter filt4("1-z^-1","1"), Filter filt5("1-z^-1","1"), Filter filt6("1-z^-1","1"), Filter filt7("1-z^-1","1")
+static_variables: 
+init:
+  if (vec_in.get_length() != 8)
+    {
+     printf("error in 'delay_intvector8': input vector must have length 8\n");
+     printf("  in this case, input vector '%s' has length %d\n",
+     vec_in.get_name(),vec_in.get_length());
+     exit(1);
+    }
+  filt0.set("z^-no","1","no",delay);
+  filt1.set("z^-no","1","no",delay);
+  filt2.set("z^-no","1","no",delay);
+  filt3.set("z^-no","1","no",delay);
+  filt4.set("z^-no","1","no",delay);
+  filt5.set("z^-no","1","no",delay);
+  filt6.set("z^-no","1","no",delay);
+  filt7.set("z^-no","1","no",delay);
+set_output_vector_lengths:  vec_out=8
+code:
+  int i;
+  filt0.inp(vec_in.get_elem(0));
+  vec_out.set_elem(0, (int) filt0.out);
+  filt1.inp(vec_in.get_elem(1));
+  vec_out.set_elem(1, (int) filt1.out);
+  filt2.inp(vec_in.get_elem(2));
+  vec_out.set_elem(2, (int) filt2.out);
+  filt3.inp(vec_in.get_elem(3));
+  vec_out.set_elem(3, (int) filt3.out);
+  filt4.inp(vec_in.get_elem(4));
+  vec_out.set_elem(4, (int) filt4.out);
+  filt5.inp(vec_in.get_elem(5));
+  vec_out.set_elem(5, (int) filt5.out);
+  filt6.inp(vec_in.get_elem(6));
+  vec_out.set_elem(6, (int) filt6.out);
+  filt7.inp(vec_in.get_elem(7));
+  vec_out.set_elem(7, (int) filt7.out);

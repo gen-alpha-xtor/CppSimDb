@@ -1,0 +1,13 @@
+module: gmsk_iq_generator
+parameters:
+inputs: double phase double clk
+outputs: double iout double qout
+static_variables:
+classes: EdgeDetect clkedge()
+init:
+code:
+if (clkedge.inp(clk))
+  {
+  iout = cos(phase);
+  qout = sin(phase);
+  }

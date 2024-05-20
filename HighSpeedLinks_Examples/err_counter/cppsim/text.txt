@@ -1,0 +1,85 @@
+module: err_counter
+description: ERR coutner--align the tx data and rx data automatically and count the errors
+
+parameters: int ratio;
+
+inputs:	    double tx_data double rx_data double clk;
+outputs:    double ber int counter double del ;
+classes:    EdgeDetect pos_edge() Delay delay_tx(0) Delay delay(0) Delay delay_clk(0);
+static_variables: int  counter_limit int counter_head int error int error2 int del_step long num int sgn int phase_max int phase_min int numTest  FILE	*fber;
+
+init:
+
+numTest = ratio;  // be consistent with ratio
+phase_max = 50;			phase_min = 35;
+ber=0;				counter=0;
+del=phase_min * numTest;	del_step=numTest;
+counter_limit=500;		counter_head=0;		
+error=0;			error2=0;
+num = 0;			sgn = 1;
+
+
+fber=fopen("ber.txt", "wb");	fprintf(fber, " ");
+
+code:
+
+delay_clk.inp(clk, 10);
+delay.inp(tx_data, del);
+
+if (pos_edge.inp(delay_clk.out))
+{ 
+  num ++;
+  counter_head++;
+
+  if (1) //  counter_head>20 )
+  {
+     counter++;
+	
+     delay.inp( tx_data, del );
+     if( counter <= counter_limit )
+     {
+        if( delay.out*rx_data*sgn < 0 )
+	   error++;
+      }
+
+      //When the allignment is wrong
+      if( counter>counter_limit  && (double)error/counter>0.1 &&  (double)error/counter<0.9 )  
+      {
+         printf("Wrong allignment. Still searching... \n\ncounter=%d\t ber=%3.2lf\tdelay=%3.2lf\n", counter, (double)error/counter, del/numTest);
+         counter=0;
+         error=0;
+	 error2 = 0;
+         del += del_step;
+         if(del> phase_max*numTest)
+	 {
+	    printf("\nIncrease the phase search range, please...");
+	    del=phase_max;
+	    sgn = sgn * -1;
+	  }
+       }
+     
+      // When the allignment is correct 
+      if (counter>counter_limit  && ((double)error/counter<=0.1  || (double)error/counter>=0.9))	
+      {    
+
+        if ( delay.out*rx_data*sgn < 0)
+        { 
+	  
+	   error++; error2++;	
+	   if (error % 10*numTest == 0 )
+	   {
+	      printf("\nerror again!\ncounter_h=%d\t counter=%d\t error= %d\t delay=%3.2lf\n", counter_head, counter, error, del/numTest);
+	      fprintf(fber, "%d   %d  %d  %d\n", num, (int) (fabs(delay.out)/delay.out), (int) (fabs(rx_data)/rx_data), (int)error2);   
+	    }
+	    
+          }  
+       }
+   }
+   ber=(double)error2/counter;
+   if (counter%1000 == 0 &&  (double)error/counter<0.9)
+       printf("\nUpdate...  \t\t\t\tdelay = %3.2lf\n# of simulated bits=%d \t\t# of errors = %d\n", del/numTest, counter, error2);
+}
+
+
+
+

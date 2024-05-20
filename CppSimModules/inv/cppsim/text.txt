@@ -1,0 +1,11 @@
+module: inv
+parameters:
+inputs:  double_interp a 
+outputs:  double_interp y
+classes:
+static_variables: double prev_y
+init:
+prev_y = -1.0;
+code:
+y = prev_y;
+prev_y = -a;

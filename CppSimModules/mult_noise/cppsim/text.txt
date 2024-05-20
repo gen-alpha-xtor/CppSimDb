@@ -1,0 +1,9 @@
+module: mult_noise
+parameters: double var
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Rand randg("gauss")
+init: 
+code:
+out = sqrt(var*in*in/Ts)*randg.inp();

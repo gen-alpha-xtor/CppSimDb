@@ -1,0 +1,10 @@
+\o Program:		@(#)$CDS: libManager.exe version 5.0.2 04/28/2005 22:29 (ocelot-linux.Cadence.COM) $
+\o Sub version:		sub-version 03.01-s027
+\o Arguments:		-mpssession icms6616 -mpshost telluride 
+\o Working Directory:	telluride:/export/data/VppSimShared/CadenceLib/CppSimModules/vco
+\o Log file is "/export/data/VppSimShared/CadenceLib/CppSimModules/vco/libManager.log".
+Opening libManager window.
+No main selection
+\o Library Manager customization server connected.
+MPS service: map window
+\o libManager is exiting.

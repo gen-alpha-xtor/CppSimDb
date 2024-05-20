@@ -1,0 +1,16 @@
+module: step_in_bool
+parameters: int vend int vstart double tstep
+inputs:  
+outputs:  bool step
+classes: 
+static_variables: double i, int start_val, int end_val;
+init: 
+i=0.0;
+start_val = (vstart == 0) ? 0 : 1;
+end_val = (vend == 0) ? 0 : 1;
+step = start_val;
+code:
+i += 1.0;
+if (i*Ts >= tstep)
+   step = end_val;
+

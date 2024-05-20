@@ -1,0 +1,23 @@
+module: trline_vimp
+parameters: double vheight double vstart double timp double zo double zor
+inputs:  double outr double outr_p
+outputs:  double out
+classes: 
+static_variables: double i, int flag
+init: i=0.0; flag=0;
+code:
+if (zor <= 0.0 || zo < 0.0)
+  {
+   printf("error in 'trline_vimp': zor must be > 0.0 and zo >= 0.0\n");
+   printf("  in this case, zor = %5.3e, zo = %5.3e\n",zor,zo);
+   exit(1);  
+  } 
+if (i*Ts >= timp && flag == 0)
+  {
+   out = zor/(zor+zo)*vheight;
+   flag = 1;
+  }
+else
+   out = vstart;
+i++;
+out += (zo-zor)/(zo+zor)*outr_p;

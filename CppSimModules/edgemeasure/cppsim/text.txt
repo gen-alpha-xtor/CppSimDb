@@ -1,0 +1,12 @@
+module: edgemeasure
+description: 
+  Records edge values for use with plot_pll_jitter in CppSimView
+parameters:
+inputs: double_interp in
+outputs: double out
+classes: EdgeMeasure sig_edge()
+static_variables:
+init:
+code:
+   sig_edge.inp(in);
+   out = sig_edge.out;

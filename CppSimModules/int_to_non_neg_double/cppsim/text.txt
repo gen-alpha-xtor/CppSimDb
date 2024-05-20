@@ -1,0 +1,36 @@
+module: int_to_non_neg_double
+parameters: int b, int beta
+inputs: int in, double clk
+outputs:  double out
+static_variables: 
+int mask_b
+int mask_error
+int mask_out
+classes: EdgeDetect clkedge()
+init: 
+if (b > 32 || b < 1)
+  {
+   printf("error in 'int_to_non_neg_double':  must have 1 <= b <= 32\n");
+   printf("   in this case, b = %d\n",b);
+   exit(1);
+ }
+if (beta > b || beta < 0)
+  {
+   printf("error in 'int_to_non_neg_double':  must have 0 <= beta <= b\n");
+   printf("   in this case, beta = %d, b = %d\n",beta,b);
+   exit(1);
+ }
+if (b == 32) 
+   mask_b = ~0;
+else
+   mask_b = (1 << b) - 1;
+mask_error = (1 << beta) - 1;
+mask_out = mask_b ^ mask_error;
+code:
+double int_part, frac_part;
+if (clkedge.inp(clk))
+   {
+   int_part = (double) ((in & (~mask_error)) >> beta);
+   frac_part = (double) (in & mask_error);
+   out = int_part + frac_part/((double) (1<<beta));
+   }

@@ -1,0 +1,13 @@
+module: ofdm_complex_gaussian
+description: create complex gaussian noise with both real (=vec_out[0]) and imaginary (=vec_out[1]) having same 0-mean and variance
+parameters: double variance
+inputs:
+outputs: Vector vec_out
+static_variables: double std_dev
+classes:
+set_output_vector_lengths:
+    vec_out=2
+init:
+    std_dev = sqrt(variance);
+code:
+    gauss_ran_vector(std_dev, 2, vec_out);

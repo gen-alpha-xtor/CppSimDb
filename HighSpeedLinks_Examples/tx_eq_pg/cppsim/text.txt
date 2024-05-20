@@ -1,0 +1,59 @@
+module: tx_eq_pg 
+
+description: FIR filter - filters incomming transmitter data and drives 
+the pre-emphasized signal on the channel 
+
+parameters: 
+inputs:  double_interp data_in double_interp clk_in double clk_adapt
+	 Vector eq_settings_vec
+	 
+
+outputs: double_interp tx_eq_out 
+
+classes: Filter filt_eq("1","1") 
+	 EdgeDetect neg_edge() 
+	 List eq_tap_list()
+	 List data_list()
+	 EdgeDetect clkadaptedge()
+static_variables:
+
+
+init: 
+%%% convert input equalizer settings vector to equalizer tap list
+eq_tap_list.load("eq_taps.dat");
+eq_tap_list.print("eq_taps_set");  
+
+data_list.load("eq_taps.dat");
+data_list.mul(0);
+ 
+filt_eq.set(eq_tap_list,"1");
+filt_eq.reset(0.0);
+
+code: 
+
+if(clkadaptedge.inp(clk_adapt))
+{
+  eq_tap_list.copy(eq_settings_vec);   
+  filt_eq.set(eq_tap_list,"1");
+ 
+// refeed the state of the filter 
+  data_list.reset();
+  while(data_list.notdone)
+     filt_eq.inp(data_list.read());
+  tx_eq_out=filt_eq.out;
+} 
+
+% eq_tap_list.copy(eq_settings_vec);   
+% filt_eq.set(eq_tap_list,"1");
+
+// create a multi-rate (symbol-spaced linear filter)
+if (neg_edge.inp(clk_in))
+{
+    //data_list is a FIFO
+    data_list.remove_first_entry();
+    data_list.inp(data_in);
+
+    filt_eq.inp(data_in);
+    tx_eq_out=filt_eq.out;
+
+}

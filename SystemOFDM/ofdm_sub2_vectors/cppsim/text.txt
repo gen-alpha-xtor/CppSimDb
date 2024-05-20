@@ -1,0 +1,11 @@
+module: ofdm_sub2_vectors
+parameters: int num_channels
+inputs: Vector vec_in1, Vector vec_in2
+outputs: Vector vec_out
+classes:
+static_variables: 
+set_output_vector_lengths:  vec_out=num_channels
+init:
+code:
+    sub(vec_in1, vec_in2, vec_out);
+    out = delay2.out;

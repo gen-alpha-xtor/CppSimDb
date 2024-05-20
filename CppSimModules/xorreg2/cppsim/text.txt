@@ -1,0 +1,12 @@
+module: xorreg2
+parameters:
+inputs:  double a, double clk 
+outputs:  double q double qb
+classes: Reg reg1() Xor xor1()
+static_variables:
+init:
+code:
+reg1.inp(xor1.out,clk);
+xor1.inp(a,reg1.out);
+q = reg1.out;
+qb=-reg1.out;

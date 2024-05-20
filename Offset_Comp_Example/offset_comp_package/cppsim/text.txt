@@ -1,0 +1,14 @@
+module: offset_comp_package
+parameters: double ro double rl double cp double cl double lbw
+inputs: double in double inb
+outputs: double_interp out double_interp outb
+classes: 
+  Filter filt1("s^2+2*pi/(ro*cl)*s+2*(2*pi)^2/(cl*l)","s^2+2*pi/(rl*c2)*s+2*(2*pi)^2/(c2*l)","ro,cl,l,rl,c2,Ts",ro,cp,lbw,rl,cl,Ts);
+  Filter filt2("s^2+2*pi/(ro*cl)*s+2*(2*pi)^2/(cl*l)","s^2+2*pi/(rl*c2)*s+2*(2*pi)^2/(c2*l)","ro,cl,l,rl,c2,Ts",ro,cp,lbw,rl,cl,Ts);
+static_variables:
+init:
+code:
+ filt1.inp(in);
+ out = cp/cl*filt1.out;
+ filt2.inp(inb);
+ outb = cp/cl*filt2.out;

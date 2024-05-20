@@ -1,0 +1,20 @@
+module: wb_limiter
+parameters: double min double max
+inputs: double in 
+outputs: double out
+classes: 
+static_variables:
+init:
+code:
+if (in < min)
+  {
+	out=min;
+  }
+else if (in > max)
+  {
+	out=max;
+  }
+else
+  {
+	out=in;
+  }

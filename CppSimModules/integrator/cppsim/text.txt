@@ -1,0 +1,10 @@
+module: integrator
+parameters: double k
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("k","s","k,Ts",k,Ts);
+init: 
+code:
+filt.inp(in);
+out = filt.out;

@@ -1,0 +1,109 @@
+module: ofdm_ber
+description: compares 2 bit streams and gives out the number of bits in error (per subchannel) and number of symbols in error
+parameters: int num_channels 
+inputs: int bits_tx, int bits_rx, IntVector vec_bit_settings, double clk_frame, double clk_data
+outputs: IntVector vec_error_bits, IntVector vec_total_bits, IntVector vec_error_syms, IntVector vec_total_syms
+static_variables: int frame_length, int clk_count, int frame_flag,
+                  IntVector vec_error
+classes: EdgeDetect clk_frame_edge(), EdgeDetect clk_data_edge()
+         IntVector data_buf_tx(), IntVector data_buf_rx(), 
+         IntVector cur_vec_bit_settings()
+set_output_vector_lengths:
+    vec_error_bits=num_channels
+    vec_total_bits=num_channels
+    vec_error_syms=num_channels
+    vec_total_syms=num_channels
+init:
+    if (vec_bit_settings.get_length() != num_channels) 
+       {
+       printf("error in 'ofdm_ber': the length\n");
+       printf("    of vec_bit_settings does not equal num_channels\n");
+       printf("    in this case, vec_bit_settings has length %d\n", 
+                    vec_bit_settings.get_length());
+       printf("    and num_channels = %d\n",num_channels);
+       exit(1);
+       }
+    int i;
+    vec_error.set_length(num_channels);
+    copy(vec_bit_settings,cur_vec_bit_settings);
+    frame_length = 0;
+    frame_flag = 0;
+    for (i = 0; i < num_channels; i++)
+        frame_length += vec_bit_settings.get_elem(i);
+    data_buf_tx.set_length(frame_length);
+    data_buf_rx.set_length(frame_length);
+     clk_count = 0;
+code:
+    int i,j,k;
+    if (clk_frame_edge.inp(clk_frame))
+      {
+       if (frame_flag == 0)
+         {
+           frame_flag = 1;    
+           clk_count = 0;
+           copy(vec_bit_settings,cur_vec_bit_settings);
+           frame_length = 0;
+           for (i = 0; i < num_channels; i++)
+                frame_length += vec_bit_settings.get_elem(i);
+           data_buf_tx.set_length(frame_length);
+           data_buf_rx.set_length(frame_length);
+         }  
+       if (frame_flag == 2)
+       {
+         frame_flag = 1;
+         if (clk_count != frame_length)
+         {
+            printf("error in 'ofdm_ber' module\n");
+            printf("    clk_count != frame_length\n");
+            printf("    -> in this case, clk_count = %d, frame_length = %d\n",
+                  clk_count, frame_length);
+            exit(1);
+         }
+         else
+         {
+         k = 0;
+         for (j = 0; j<num_channels; j++)        
+            vec_error.set_elem(j, 0);
+         for (j = 0; j<num_channels; j++)
+            {
+	            if (cur_vec_bit_settings.get_elem(j) != 0)
+		                vec_total_syms.set_elem(j, vec_total_syms.get_elem(j)+1);
+	            else
+		                vec_total_syms.set_elem(j, vec_total_syms.get_elem(j));
+                for (i = 0; i<cur_vec_bit_settings.get_elem(j); i ++)
+                {
+                        vec_total_bits.set_elem( j , vec_total_bits.get_elem(j)+1 );
+	                    if ( data_buf_tx.get_elem(k) != data_buf_rx.get_elem(k))
+                        {
+                            vec_error_bits.set_elem(j, vec_error_bits.get_elem(j)+1 );
+                            vec_error.set_elem(j, 1);
+                        }
+                    k ++ ;
+                }    
+                if ( vec_error.get_elem(j) != 0) 
+                    vec_error_syms.set_elem(j, vec_error_syms.get_elem(j)+1);    
+            }
+        copy(vec_bit_settings,cur_vec_bit_settings);
+        clk_count = 0;
+        frame_length = 0;
+        for (i=0; i < num_channels; i++)
+            frame_length += cur_vec_bit_settings.get_elem(i);
+        data_buf_tx.set_length(frame_length);
+        data_buf_rx.set_length(frame_length);
+        }
+      } 
+    }
+    if (clk_data_edge.inp(clk_data))
+      {
+        if (frame_flag == 1)
+          {
+             if (clk_count < frame_length)
+                {
+                 data_buf_tx.set_elem(clk_count, bits_tx);  
+                 data_buf_rx.set_elem(clk_count, bits_rx);
+                 clk_count ++;
+                 if (clk_count == frame_length)
+                    frame_flag = 2;                 
+                }
+          }
+       }

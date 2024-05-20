@@ -1,0 +1,29 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module enable(clk_enable, clk);
+
+   input clk;
+   output clk_enable;
+
+   wreal clk;
+   real clk_rv;
+   wreal clk_enable;
+   real clk_enable_rv;
+
+   assign clk_enable = clk_enable_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+      end
+
+   always
+      begin
+        #1
+        $enable_cpp(clk_rv,clk_enable_rv);
+      end
+
+endmodule
+

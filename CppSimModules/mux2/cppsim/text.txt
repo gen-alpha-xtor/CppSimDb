@@ -1,0 +1,9 @@
+module: mux2
+parameters: 
+inputs: double in0, double in1, double sel 
+outputs:  double y
+static_variables:  double yz, int x1, List l1;
+classes:
+init: 
+code:
+y = sel > 0.0 ? in1 : in0;

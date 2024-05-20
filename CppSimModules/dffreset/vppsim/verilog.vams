@@ -1,0 +1,41 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module dffreset(q, qb, clk, d, r);
+
+   input clk;
+   input d;
+   input r;
+   output q;
+   output qb;
+
+   wreal clk;
+   real clk_rv;
+   wreal d;
+   real d_rv;
+   wreal r;
+   real r_rv;
+   wreal q;
+   real q_rv;
+   wreal qb;
+   real qb_rv;
+
+   assign q = q_rv;
+   assign qb = qb_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign d_rv = d;
+        assign r_rv = r;
+      end
+
+   always
+      begin
+        #1
+        $dffreset_cpp(clk_rv,d_rv,r_rv,q_rv,qb_rv);
+      end
+
+endmodule
+

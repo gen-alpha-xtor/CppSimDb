@@ -1,0 +1,47 @@
+module: ofdm_fft
+description:  outputs fft of input
+parameters: int num_channels
+inputs: Vector vec_fft_i, Vector vec_fft_q, double clk_frame
+outputs:  Vector vec_dqam_i, Vector vec_dqam_q
+static_variables: 
+classes: EdgeDetect clk_frame_edge()
+set_output_vector_lengths:
+  vec_dqam_i=num_channels
+  vec_dqam_q=num_channels
+init:
+  int power_of_two;
+  power_of_two = 2;
+  while (power_of_two <= num_channels)
+     {
+      if (num_channels % power_of_two != 0)
+         break;
+      power_of_two = power_of_two << 1;
+     }
+   if (power_of_two < num_channels)
+      {
+          printf("error in 'ofdm_fft':  num_channels must equal 2^n\n");
+          printf("   where n is an integer\n");
+          printf("   ->  in this case, num_channels = %d\n",num_channels);
+          exit(1);
+      }
+  if (vec_fft_i.get_length() != num_channels)
+     {
+      printf("error in 'ofdm_fft':  input fft vectors must have length equal to num_channels\n");
+      printf("  in this case, length of vec_fft_i ('%s') = %d\n",
+                  vec_fft_i.get_name(), vec_fft_i.get_length());
+      printf("  num_channels = %d\n",num_channels);
+      exit(1);
+     }
+  if (vec_fft_q.get_length() != num_channels)
+     {
+      printf("error in 'ofdm_fft':  input fft vectors must have length equal to num_channels\n");
+      printf("  in this case, length of vec_fft_q ('%s') = %d\n",
+                  vec_fft_q.get_name(), vec_fft_q.get_length());
+      printf("  num_channels = %d\n",num_channels);
+      exit(1);
+     }
+code:
+  if (clk_frame_edge.inp(clk_frame))
+     {
+      fft(vec_fft_i,vec_fft_q,vec_dqam_i,vec_dqam_q);
+     }

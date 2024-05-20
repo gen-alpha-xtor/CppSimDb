@@ -1,0 +1,25 @@
+module: int_vector_2splitter
+description: split input vector (of length_in) into 2 integer vectors each of equal length (=length_in/2=length_out) 
+parameters: int length_out
+inputs: IntVector vec_in 
+outputs: IntVector vec_out1 IntVector vec_out2
+classes:
+static_variables:
+set_output_vector_lengths:
+    vec_out1=length_out
+    vec_out2=length_out
+init:
+    if (length_out != vec_in.get_length()/2)
+        {
+        printf("error in 'int_vector_2splitter': length_out must equal length_in/2\n");
+        printf("   -> in this case, length_out = %d\n", length_out);
+        printf("      while, input vector length = %d\n", vec_in.get_length());
+        exit(1);
+        }
+code:
+    int i;
+    for (i=0; i<length_out; i++)
+    {
+       vec_out1.set_elem(i, vec_in.get_elem(i));
+       vec_out2.set_elem(i, vec_in.get_elem(i+length_out));
+    }   

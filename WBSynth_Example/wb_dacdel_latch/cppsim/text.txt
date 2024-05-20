@@ -1,0 +1,13 @@
+module: wb_dacdel_latch
+parameters: 
+inputs: double in, double clk
+outputs: double out
+classes: EdgeDetect clkedge()
+static_variables: 
+init: 
+out = 0.0;
+code:
+if (clkedge.inp(clk))
+{
+out=in;
+}

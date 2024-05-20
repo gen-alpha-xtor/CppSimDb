@@ -1,0 +1,23 @@
+module: tx_eqV 
+
+description: FIR filter - filters incomming transmitter data and drives 
+the pre-emphasized signal on the channel 
+
+parameters: 
+inputs:  double data_in double clk_in Vector eq_settings_vec
+outputs: double_interp tx_eq_out 
+classes: Filter filt_eq("1","1") EdgeDetect neg_edge() List eq_tap_list()
+static_variables:
+
+init: 
+%%% convert input equalizer settings vector to equalizer tap list
+eq_tap_list.copy(eq_settings_vec);
+eq_tap_list.print("eq_taps_set");   
+filt_eq.set(eq_tap_list,"1");
+filt_eq.reset(0.0);
+
+code: 
+// create a multi-rate (symbol-spaced linear filter)
+if (neg_edge.inp(clk_in))
+    filt_eq.inp(data_in);
+tx_eq_out=filt_eq.out;

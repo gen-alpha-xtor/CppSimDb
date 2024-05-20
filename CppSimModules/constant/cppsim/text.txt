@@ -1,0 +1,10 @@
+module: constant
+parameters: double consval
+inputs: 
+outputs:  double out
+static_variables:
+classes:
+init: 
+out = consval;
+code:
+out = consval;

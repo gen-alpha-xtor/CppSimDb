@@ -1,0 +1,32 @@
+module: ofdm_sqrt_rcosflt
+parameters: double bt, double data_period, double ts, int delay
+inputs: double in
+outputs: double out
+classes: Filter filt("1","1"), List list1()
+static_variables: 
+init: 
+    double data_period_r, r, cur_val, prefix;
+    int half_filter_length, i, f;
+    data_period_r = (double) data_period;
+    f = (int) (data_period_r/ts); // assuming ts=1, f=t_ch    
+    r = 0.1719; //roll-off factor: 75/64 - 1 
+    prefix = 4*r/(pi*sqrt(f));
+    half_filter_length = delay*f;
+    for (i=-half_filter_length; i<=half_filter_length; i++)
+        {
+         if (i == 0)
+            {
+            cur_val = prefix * (1 + (1-r)*pi/(4*r));
+            list1.inp(cur_val);
+            }
+         else
+            {
+            cur_val = ( prefix / (1 - pow((4*r*i/f),2)) ) * (cos((1+r)*pi*i/f) + (sin((1-r)*pi*i/f)/(4*r*i/f)));
+            list1.inp(cur_val);
+            }
+        }
+    list1.save("filt_sqrt_rcos.dat");
+    filt.set(list1,"1");
+code:
+    filt.inp(in);
+    out = filt.out;

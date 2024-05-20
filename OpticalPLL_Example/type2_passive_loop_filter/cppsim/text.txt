@@ -1,0 +1,10 @@
+module: type2_passive_loop_filter
+parameters: double c1, double c2, double r1
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("1+a*s","b*s + c*s^2","a,b,c,Ts",r1*c2,c1+c2,r1*c1*c2,Ts);
+init: 
+code:
+filt.inp(in);
+out = filt.out;

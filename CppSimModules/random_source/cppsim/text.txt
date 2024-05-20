@@ -1,0 +1,14 @@
+module: random_source 
+description: Produce uniform random data in [-0.5,M-0.5] (M = order) which is square wave
+parameters: int order
+inputs: double clk
+outputs: double out
+classes: Rand data("uniform"), EdgeDetect clkedge()
+static_variables:
+init:
+code: 
+  if (clkedge.inp(clk))
+     {
+     data.inp();   	
+     }
+   out = (((double) (order))*data.out) - 0.5;	

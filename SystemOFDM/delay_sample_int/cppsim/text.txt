@@ -1,0 +1,12 @@
+module: delay_sample_int
+description: design a time-delay filter: delta[n-delay]. delay must be an integer.
+parameters: int delay 
+inputs: int in
+outputs: int out
+classes: Filter filt("1-z^-1","1")
+static_variables:
+init:
+  filt.set("z^-no","1","no",delay);
+code:
+  filt.inp(in);
+  out = (int) filt.out;

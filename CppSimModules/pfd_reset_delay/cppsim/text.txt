@@ -1,0 +1,10 @@
+module: pfd_reset_delay
+parameters: double delaytime
+inputs: double_interp in
+outputs:  double_interp out
+static_variables:
+classes: Delay delay1(delaytime/Ts - 1.0);
+init:
+code:
+delay1.inp(in);
+out = delay1.out; 

@@ -1,0 +1,37 @@
+module: vec_to_elem_8
+parameters: int start_elem
+inputs: Vector vec_in
+outputs: double_interp vec_elem_0 double_interp vec_elem_1 double_interp vec_elem_2
+double_interp vec_elem_3 double_interp vec_elem_4 double_interp vec_elem_5
+double_interp vec_elem_6 double_interp vec_elem_7
+classes: 
+static_variables: int vec_length
+init:
+vec_length = vec_in.get_length();
+vec_elem_0 = 0.0;
+vec_elem_1 = 0.0;
+vec_elem_2 = 0.0;
+vec_elem_3 = 0.0;
+vec_elem_4 = 0.0;
+vec_elem_5 = 0.0;
+vec_elem_6 = 0.0;
+vec_elem_7 = 0.0;
+code:
+int i;
+i = start_elem;
+if (i < vec_length)
+   vec_elem_0 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_1 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_2 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_3 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_4 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_5 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_6 = vec_in.get_elem(i++);
+if (i < vec_length)
+   vec_elem_7 = vec_in.get_elem(i++);

@@ -1,0 +1,14 @@
+module: enable
+description: clk_enable == 1 at the rising edge of the clock and 0 otherwise
+parameters:
+inputs: double clk
+outputs: double clk_enable
+classes: EdgeDetect clk_edge()
+static_variables:
+init:
+    clk_enable = 0;
+code:
+    if (clk_edge.inp(clk))
+        clk_enable = 1;
+    else 
+        clk_enable = 0;

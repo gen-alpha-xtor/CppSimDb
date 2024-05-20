@@ -1,0 +1,22 @@
+module: offset_comp_amp
+parameters: double bw double m double gain double offset double min double max 
+inputs: double in double inb 
+outputs: double out double outb
+classes: 
+ Amp amp1("offset/2-gain*a+A1*a^2+A2*a^3","offset,gain,Min,Max,A1,A2",offset,gain,min,max,0.0,0.0);
+ Amp amp2("-offset/2-gain*b+B1*b^2+B2*b^3","offset,gain,Min,Max,B1,B2",offset,gain,min,max,0.0,0.0);
+ Filter filt1("1 + 1/(2*pi*fz)*s","1 + 1/(2*pi*fp)*s + 1/(fp*fz*(2*pi)^2)*s^2","fp,fz,Ts",bw,m*bw,Ts);
+ Filter filt2("1 + 1/(2*pi*fz)*s","1 + 1/(2*pi*fp)*s + 1/(fp*fz*(2*pi)^2)*s^2","fp,fz,Ts",bw,m*bw,Ts);
+ Filter filt3("1","1 + 1/(2*pi*fp)*s","fp,Ts",10*bw,Ts);
+ Filter filt4("1","1 + 1/(2*pi*fp)*s","fp,Ts",10*bw,Ts);
+static_variables:
+init: 
+code:
+ amp1.inp(in);
+ amp2.inp(inb);
+ filt1.inp(amp1.out);
+ filt2.inp(amp2.out);
+ filt3.inp(filt1.out);
+ filt4.inp(filt2.out);
+ out = filt3.out;
+ outb = filt4.out;

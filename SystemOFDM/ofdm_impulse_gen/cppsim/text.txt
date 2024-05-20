@@ -1,0 +1,34 @@
+module: ofdm_impulse_generator
+description: 
+parameters: 
+inputs: double in_i, double in_q, double clk_frame, double clk_channel
+outputs: double out_i, double out_q, int start_sample
+classes: EdgeDetect clk_frame_edge(), EdgeDetect clk_channel_edge()
+static_variables: int frame_flag, int sample_count, int start_flag
+init:
+    frame_flag = -1;
+    out_i = 0;
+    out_q = 0;
+    sample_count = 0;
+    start_flag = 0;
+code:
+   sample_count ++;
+   if (clk_frame_edge.inp(clk_frame))
+   {
+      frame_flag = 1;
+   }
+   if (clk_channel_edge.inp(clk_channel) && (frame_flag == 1)) 
+   {
+    if (start_flag == 0)
+        {
+         start_flag = 1; //first sample
+         start_sample = sample_count;
+        }
+    out_i = in_i;
+    out_q = in_q;        
+   }     
+   else
+   {
+     out_i = 0;
+     out_q = 0;
+   }   

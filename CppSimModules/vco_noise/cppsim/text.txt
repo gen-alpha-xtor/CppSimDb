@@ -1,0 +1,10 @@
+module: vco_noise
+parameters: double noise_at_foff, double foff, double kv
+inputs: 
+outputs:  double out
+static_variables: double noise_var
+classes: Rand randg("gauss");
+init: 
+noise_var = foff*foff/(kv*kv)*pow(10.0,noise_at_foff/10.0);
+code:
+out = sqrt(noise_var/Ts)*randg.inp();

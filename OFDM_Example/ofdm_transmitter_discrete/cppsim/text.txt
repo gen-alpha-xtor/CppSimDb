@@ -1,0 +1,2 @@
+module: ofdm_transmitter_discrete
+sim_order: xi0 xi1 xi2 xi3 xi4 xi5 xi6 xi7

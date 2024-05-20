@@ -1,0 +1,63 @@
+module: prbsV
+parameters: 
+inputs: double clkV 
+outputs:  double outV
+classes: EdgeDetect pos_edge() Xor xor1() Xor xor2() Xor xor3() Xor xor4()
+static_variables: double lfsr[32] 
+
+init: 
+//set seeds
+lfsr[31]=1;
+lfsr[30]=1;
+lfsr[29]=1;
+lfsr[28]=1;
+lfsr[27]=1;
+lfsr[26]=1;
+lfsr[25]=1;
+lfsr[24]=1;
+lfsr[23]=1;
+lfsr[22]=1;
+lfsr[21]=1;
+lfsr[20]=1;
+lfsr[19]=1;
+lfsr[18]=1;
+lfsr[17]=1;
+lfsr[16]=1;
+lfsr[15]=1;
+lfsr[14]=1;
+lfsr[13]=1;
+lfsr[12]=1;
+lfsr[11]=1;
+lfsr[10]=1;  
+lfsr[9]=1;  
+lfsr[8]=1;
+lfsr[7]=1; 
+lfsr[6]=1;  
+lfsr[5]=1; 
+lfsr[4]=1;  
+lfsr[3]=1; 
+lfsr[2]=1;  
+lfsr[1]=1;
+lfsr[0]=-1;  
+
+code:
+int i;
+
+outV = lfsr[0] ;
+xor1.inp(lfsr[31], lfsr[21]); 
+xor2.inp(lfsr[1], lfsr[0]);  
+xor3.inp(xor1.out, xor2.out);
+xor4.inp(xor3.out, 1);
+
+if (pos_edge.inp(clkV))
+{
+//   printf("\n%3.3lf\t%3.3lf\t%3.3lf\t%3.3lf\t%3.3f",lfsr[31], lfsr[21], lfsr[1], lfsr[0], xor4.out);
+//   getchar();
+
+   for (i=31; i>0; i--)
+   {
+      lfsr[i] = lfsr[i-1];
+    }
+   lfsr[0] = xor4.out;
+
+} 

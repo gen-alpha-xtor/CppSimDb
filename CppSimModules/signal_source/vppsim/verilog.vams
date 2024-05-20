@@ -1,0 +1,35 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module signal_source(clk, out, phase);
+
+   parameter stype = 0;
+   parameter freq = 0.0000000000e+00;
+   input phase;
+   output clk;
+   output out;
+
+   wreal phase;
+   real phase_rv;
+   wreal clk;
+   real clk_rv;
+   wreal out;
+   real out_rv;
+
+   assign clk = clk_rv;
+   assign out = out_rv;
+
+   initial
+      begin
+        assign phase_rv = phase;
+      end
+
+   always
+      begin
+        #1
+        $signal_source_cpp(phase_rv,clk_rv,out_rv,stype,freq);
+      end
+
+endmodule
+

@@ -1,0 +1,10 @@
+module: cpp_internal_int_to_double_convert
+parameters: 
+inputs: int in
+outputs:  double out
+static_variables:
+classes:
+init:
+out = 0.0; 
+code:
+out = (double) in;

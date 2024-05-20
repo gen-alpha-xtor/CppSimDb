@@ -1,0 +1,13 @@
+module: remove_mean
+description: this blocks removes the mean of the input random process (e.g. for rayleigh fading)
+parameters: 
+inputs: Vector vec_in
+outputs: Vector vec_out
+classes:
+static_variables:
+set_output_vector_lengths:
+    vec_out=2
+init:
+code:
+    sub(vec_in, get_mean(vec_in), vec_out);
+    printf("mean_input = %lf, mean_output = %lf\n", get_mean(vec_in), get_mean(vec_out));

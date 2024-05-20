@@ -1,0 +1,7 @@
+module: constant_bool
+outputs: bool out
+parameters: int val
+init:
+out = val == 0 ? 0 : 1;
+code:
+out = val == 0 ? 0 : 1;

@@ -1,0 +1,10 @@
+module: cpp_internal_double_to_int_convert
+parameters: 
+inputs: double in
+outputs:  int out
+static_variables:
+classes:
+init:
+out = 0; 
+code:
+out = (int) floor(in+0.5);

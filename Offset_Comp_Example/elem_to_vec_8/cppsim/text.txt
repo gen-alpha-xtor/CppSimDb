@@ -1,0 +1,29 @@
+module: elem_to_vec_8
+parameters: int vec_length
+inputs: double vec_elem_0 double vec_elem_1 double vec_elem_2
+double vec_elem_3 double vec_elem_4 double vec_elem_5
+double vec_elem_6 double vec_elem_7
+outputs: Vector vec_out
+classes: 
+static_variables:
+set_output_vector_lengths: vec_out=vec_length 
+init:
+code:
+int i;
+i = 0;
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_0);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_1);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_2);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_3);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_4);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_5);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_6);
+if (i < vec_length)
+   vec_out.set_elem(i++,vec_elem_7);

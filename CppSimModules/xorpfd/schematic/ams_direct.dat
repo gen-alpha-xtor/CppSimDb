@@ -1,0 +1,23 @@
+$FILE_FORMAT_VERSION
+	Version 1.1;
+$END
+$VECTOR_PREFERENCE
+	descending;
+$END
+$TIMESTAMP
+	1130547129=13-CppSimModules6-dffset;
+	1130547280=13-CppSimModules6-dffset6-symbol;
+	1130181593=13-CppSimModules4-xor2;
+	1130971576=13-CppSimModules4-xor26-symbol;
+	1130181593=13-CppSimModules5-nand2;
+	1130976504=13-CppSimModules5-nand26-symbol;
+	1130546995=13-CppSimModules8-dffreset;
+	1140486361=13-CppSimModules8-dffreset6-symbol;
+	1130548025=13-CppSimModules4-dff2;
+	1140321971=13-CppSimModules4-dff26-symbol;
+	-1=5-basic4-opin;
+	1034185461=5-basic4-opin6-symbol;
+	-1=5-basic4-ipin;
+	1034185458=5-basic4-ipin6-symbol;
+	1141232298=verilog.vams;
+$END

@@ -1,0 +1,38 @@
+module: gmsk_limitamp
+parameters:
+inputs: double in
+outputs: double_interp out
+static_variables: double prev_in, int state
+classes:
+init:
+state = -2;
+prev_in = 0.0;
+out = -1.0;
+code:
+if (state == -2 && in >= 0.0) /* positive transition */
+  {
+    if (fabs(in-prev_in) > 1e-12)
+        out = (in+prev_in)/(in-prev_in);
+    else
+        out = 1.0;
+    state = 1;
+  }
+else if (state == 1)
+  {
+    out = 1.0;
+    state = 2;
+  }
+else if (state == 2 && in < 0.0) /* negative transition */
+  {
+    if (fabs(in-prev_in) > 1e-12)
+       out = -(in+prev_in)/(in-prev_in);
+    else
+       out = -1.0;
+    state = -1;
+  }
+else if (state == -1)
+  {
+    out = -1.0;
+    state = -2;
+  }
+prev_in=in;

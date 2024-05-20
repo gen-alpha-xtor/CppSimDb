@@ -1,0 +1,114 @@
+module: ofdm_receiver_parallel_to_serial
+description: parallel-to-serial converter of the bits in each ofdm frame
+parameters: int num_channels 
+inputs: IntVector vec_bits, IntVector vec_bit_settings, double clk_frame, double clk_data
+outputs: int out_bit
+static_variables: int frame_length, int num_bits, int data_val, 
+                  int clk_count, int frame_flag, int data_buf_index
+                  int second
+classes: EdgeDetect clk_frame_edge(), EdgeDetect clk_data_edge(), IntVector data_buf(), IntVector cur_vec_bit_settings()
+init:
+    if (vec_bit_settings.get_length() != num_channels) 
+       {
+       printf("error in 'ofdm_receiver_parallel_to_serial': the length\n");
+       printf("    of vec_bit_settings does not equal num_channels\n");
+       printf("    in this case, vec_bit_settings has length %d\n", 
+                    vec_bit_settings.get_length());
+       printf("    and num_channels = %d\n",num_channels);
+       exit(1);
+       }
+    if (vec_bits.get_length() != num_channels)
+       {
+       printf("error in 'ofdm_receiver_parallel_to_serial': the length\n");
+       printf("    of vec_bits does not equal num_channels\n");
+       printf("    in this case, vec_bits has length %d\n", 
+                    vec_bits.get_length());
+       printf("    and num_channels = %d\n",num_channels);
+       exit(1);
+       }
+    int i;
+     copy(vec_bit_settings, cur_vec_bit_settings);
+     frame_length = 0;
+     for (i = 0; i < num_channels; i++)
+         frame_length += vec_bit_settings.get_elem(i);
+     data_buf.set_length(frame_length);
+     clk_count = 0;
+     frame_flag = 0;
+     out_bit = 0;
+     data_buf_index = 0;    
+     second = 0;
+code:
+    int i,j,mask,bit_val;
+    if (clk_frame_edge.inp(clk_frame))
+    {
+        frame_length = 0;
+        for (i = 0; i < num_channels; i++)
+             frame_length += vec_bit_settings.get_elem(i);
+        data_buf.set_length(frame_length);
+        if (second == 0)
+        {
+            frame_length = 0;
+            for (i = 0; i < num_channels; i++)
+                frame_length += vec_bit_settings.get_elem(i);
+            data_buf.set_length(frame_length);
+            frame_flag = 1;
+            clk_count = 0;
+            data_buf_index = 0;
+            for (i = 0; i<num_channels; i++)
+            {
+                num_bits = vec_bit_settings.get_elem(i);
+                data_val = vec_bits.get_elem(i);
+                if (num_bits != 0 && num_bits != 1 && num_bits != 2 && num_bits != 4 && num_bits != 6 && num_bits != 8)
+                {
+                    printf("error in 'ofdm_receiver_parallel_to_serial': num_bits != 0,2,4,6,8 is not supported\n");
+                    printf(" in this case, num_bits = %d\n", num_bits);
+                    exit(1);                    
+                }
+                for (j=0; j<num_bits; j++)
+                {
+                    mask = 1 << j;
+                    bit_val = (data_val & mask) == 0 ? 0 : 1;
+                    data_buf.set_elem(data_buf_index, bit_val);
+                    data_buf_index ++;
+                }               
+            }
+        }
+    }
+    if (clk_data_edge.inp(clk_data))
+    {
+        second = 1;
+        if (frame_flag == 1)
+        {
+            if (clk_count < frame_length)
+            {
+                out_bit = data_buf.get_elem(clk_count);    
+                clk_count ++;
+            }
+            else
+                out_bit = 0;
+        }
+        else
+        {
+            if (clk_count < frame_length)
+                clk_count ++;
+        }
+        if (clk_count == frame_length)
+            second = 0;
+    }
+    if (clk_frame_edge.inp(clk_frame))
+    {
+        if (clk_count != frame_length)
+        {
+            printf("error in 'ofdm_receiver_parallel_to_serial' module\n");
+            printf("    clk_count != frame_length\n");
+            printf("    -> in this case, clk_count = %d, frame_length = %d\n",
+                  clk_count, frame_length);
+            exit(1);        
+        }
+        copy(vec_bit_settings, cur_vec_bit_settings);
+        clk_count = 0;
+        frame_length = 0;
+        for (i=0; i<num_channels; i++)
+            frame_length += cur_vec_bit_settings.get_elem(i);
+        data_buf.set_length(frame_length);
+}    

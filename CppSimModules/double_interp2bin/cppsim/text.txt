@@ -1,0 +1,10 @@
+module: double_interp2bin
+parameters: 
+inputs: double in
+outputs: double out
+classes: 
+static_variables: 
+init: 
+out = 0.0;
+code:
+out = (in+1.0)*0.5;

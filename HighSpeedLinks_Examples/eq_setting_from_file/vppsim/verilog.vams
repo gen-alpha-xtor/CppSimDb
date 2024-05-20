@@ -1,0 +1,21 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module eq_setting_from_file(vec_out);
+
+   parameter num_tap = 0;
+   output [31:0] vec_out;
+
+   integer vec_out_iv;
+
+   assign vec_out = vec_out_iv;
+
+   always
+      begin
+        #1
+        $eq_setting_from_file_cpp(vec_out_iv,num_tap);
+      end
+
+endmodule
+

@@ -1,0 +1,16 @@
+module: offset_comp_comp
+parameters: double compgain double hyst
+inputs: double a double b
+outputs: double_interp y double_interp z
+classes: Amp amp1("A*x","A,Min,Max",compgain,-1.0,1.0);
+static_variables:
+init:
+  y = 1.0;
+  z = -1.0;
+code:
+  if (y >= 0.0)
+    amp1.inp(a-b+hyst);
+  else
+    amp1.inp(a-b-hyst);
+  y = amp1.out;
+  z = -amp1.out;

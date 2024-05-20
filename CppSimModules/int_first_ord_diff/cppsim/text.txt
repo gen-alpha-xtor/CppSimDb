@@ -1,0 +1,14 @@
+module: int_first_ord_diff
+parameters:
+inputs: double in, double clk
+outputs:  double out
+static_variables: double prev_in
+classes: EdgeDetect clkedge()
+init: 
+prev_in = 0;
+code:
+if (clkedge.inp(clk))
+   {
+    out = floor(in+0.5) - prev_in;
+    prev_in = floor(in+0.5);
+   }

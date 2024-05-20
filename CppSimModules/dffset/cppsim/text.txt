@@ -1,0 +1,15 @@
+module: dffset
+parameters:
+inputs: double_interp d double_interp clk double_interp s 
+outputs: double_interp q double_interp qb
+classes: Reg reg1()
+static_variables: double prev_q
+init:
+prev_q = -1.0;
+q = -1.0;
+qb = -q; 
+code:
+q = prev_q;
+qb = -q;
+reg1.inp(d,clk,s,-1.0);
+prev_q=reg1.out;

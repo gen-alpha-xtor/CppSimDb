@@ -1,0 +1,50 @@
+module: triangle_wave_gen
+inputs: bool clk
+outputs: double out
+timing_sensitivity: posedge clk
+parameters: double offset, double amp_pp, double freq_out, double freq_clk
+static_variables: double incr, double max, double min, int state
+init:
+if (freq_out < 1e-6)
+  {
+  printf("error in 'triangle_wave_gen':  freq_out must be > 1e-6\n");
+  printf("  in this case, freq_out = '%5.3e'\n",freq_out);
+  exit(1);
+  }
+if (freq_clk < 1e-6)
+  {
+  printf("error in 'triangle_wave_gen':  freq_clk must be > 1e-6\n");
+  printf("  in this case, freq_clk = '%5.3e'\n",freq_clk);
+  exit(1);
+  }
+if (amp_pp < 0.0)
+  {
+  printf("error in 'triangle_wave_gen':  amp_pp must be > 0.0\n");
+  printf("  in this case, amp_pp = '%5.3e'\n",amp_pp);
+  exit(1);
+  }
+
+incr = amp_pp*2.0*freq_out/freq_clk;
+max = offset + amp_pp/2.0;
+min = offset - amp_pp/2.0;
+out = offset;
+state = 1;
+code:
+if (state == 1)
+  {
+   out += incr;
+   if (out >= max)
+     {
+      out = max;
+      state = 0;
+     }
+  }
+else if (state == 0)
+  {
+   out -= incr;
+   if (out <= min)
+     {
+      out = min;
+      state = 1;
+     }
+  }

@@ -1,0 +1,9 @@
+module: ch_pump
+parameters: double ival
+inputs: double in
+outputs:  double out
+static_variables:
+classes:
+init: 
+code:
+out = ival*in;

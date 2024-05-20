@@ -1,0 +1,24 @@
+module: halfrate_sampler_controller
+description: assumes even-bit monitored when clk is high
+parameters:
+inputs: double_interp data_prev double_interp clk_halfrate
+outputs: double_interp control_even double_interp control_odd double_interp control_evenb double_interp control_oddb
+classes: 
+EdgeDetect pos_edge() EdgeDetect neg_edge();
+static_variables:
+init: 
+control_even = -1; 
+control_evenb = -1;
+control_odd = -1;
+control_oddb = -1;
+code:
+    if (pos_edge.inp(clk_halfrate))
+    {
+	control_even = data_prev;
+	control_evenb = -1*data_prev;
+    }
+    else if (neg_edge.inp(-clk_halfrate))
+    {
+	control_odd = data_prev;
+	control_oddb = -1*data_prev;
+    }

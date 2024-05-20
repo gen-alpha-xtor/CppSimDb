@@ -1,0 +1,36 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module vco_quadrature(cosout, sineout, vctrl);
+
+   parameter freq = 0.0000000000e+00;
+   parameter kvco = 0.0000000000e+00;
+   parameter phase_adj = 0.0000000000e+00;
+   input vctrl;
+   output cosout;
+   output sineout;
+
+   wreal vctrl;
+   real vctrl_rv;
+   wreal cosout;
+   real cosout_rv;
+   wreal sineout;
+   real sineout_rv;
+
+   assign cosout = cosout_rv;
+   assign sineout = sineout_rv;
+
+   initial
+      begin
+        assign vctrl_rv = vctrl;
+      end
+
+   always
+      begin
+        #1
+        $vco_quadrature_cpp(vctrl_rv,cosout_rv,sineout_rv,freq,kvco,phase_adj);
+      end
+
+endmodule
+

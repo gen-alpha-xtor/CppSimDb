@@ -1,0 +1,11 @@
+module: mult2_scalar_vec
+description: multiply a vector by a scalar
+parameters: 
+inputs: double in, Vector vec_in
+outputs: Vector vec_out
+static_variables: 
+classes:
+set_output_vector_lengths: vec_out=2
+init:
+code:
+    mul_elem(in, vec_in, vec_out);    

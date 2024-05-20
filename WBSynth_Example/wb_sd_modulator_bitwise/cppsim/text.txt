@@ -1,0 +1,25 @@
+module: wb_sd_modulator_bitwise
+description: bitwise first order sigma delta modulator
+parameters: int inbits int outbits
+inputs: double in double clk
+outputs: double out double residue
+classes: EdgeDetect clkedge()
+static_variables: int mask int i int resbits
+init: 
+	mask=0;
+	i=0;
+	residue=0;
+	out=0.0;
+        resbits=inbits+1-outbits;
+	for (i=0; i<resbits; i++)
+		mask+=int(pow(2,i));
+code:
+if (clkedge.inp(clk))
+   {
+   	in=floor(in*pow(2,inbits));
+   	residue=residue*pow(2,resbits);
+   	out=((~mask)&(int)(in+residue));
+   	residue=mask&(int)(in+residue);
+   	residue=round(residue)/pow(2,resbits);
+   	out=((int)out>>resbits);
+   }

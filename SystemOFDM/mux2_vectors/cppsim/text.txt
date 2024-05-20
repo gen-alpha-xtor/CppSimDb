@@ -1,0 +1,31 @@
+module: mux2_vectors
+parameters: int vec_length
+inputs: Vector vec_in0, Vector vec_in1, double sel 
+outputs:  Vector vec_out
+static_variables:  
+classes:
+set_output_vector_lengths:  vec_out=vec_length
+init: 
+  if (vec_in0.get_length() != vec_length)
+     {      
+     printf("error in module 'mux2_intvectors':\n");
+     printf("   length of vec_in0 (i.e., '%s') does not equal 'vec_length'\n",
+              vec_in0.get_name());
+     printf("   in this case, vec_in0 has length %d and vec_length=%d\n",
+              vec_in0.get_length(),vec_length);
+     exit(1);
+     }
+  if (vec_in1.get_length() != vec_length)
+     {      
+     printf("error in module 'mux2_intvectors':\n");
+     printf("   length of vec_in1 (i.e., '%s') does not equal 'vec_length'\n",
+              vec_in1.get_name());
+     printf("   in this case, vec_in1 has length %d and vec_length=%d\n",
+              vec_in1.get_length(),vec_length);
+     exit(1);
+     }
+code:
+    if (sel > 0.0)
+        vec_out.copy(vec_in1);
+    else
+        vec_out.copy(vec_in0);

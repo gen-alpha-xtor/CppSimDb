@@ -1,0 +1,33 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module and2(y, b, a);
+
+   input b;
+   input a;
+   output y;
+
+   wreal b;
+   real b_rv;
+   wreal a;
+   real a_rv;
+   wreal y;
+   real y_rv;
+
+   assign y = y_rv;
+
+   initial
+      begin
+        assign b_rv = b;
+        assign a_rv = a;
+      end
+
+   always
+      begin
+        #1
+        $and2_cpp(b_rv,a_rv,y_rv);
+      end
+
+endmodule
+

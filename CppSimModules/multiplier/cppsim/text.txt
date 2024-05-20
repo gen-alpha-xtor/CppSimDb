@@ -1,0 +1,9 @@
+module: multiplier
+parameters:
+inputs: double in1 double in2
+outputs: double out
+classes: 
+static_variables:
+init: 
+code:
+out = in1*in2;

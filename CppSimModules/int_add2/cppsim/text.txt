@@ -1,0 +1,10 @@
+module: int_add2
+parameters: 
+inputs: double in1, double in2
+outputs:  double out
+static_variables:
+classes:
+init: 
+out = floor(in1+0.5)+floor(in2+0.5);
+code:
+out = floor(in1+0.5)+floor(in2+0.5);

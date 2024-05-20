@@ -1,0 +1,18 @@
+module: accum_and_dump
+parameters: 
+inputs: double in, double clk
+outputs: double out
+classes: EdgeDetect clkedge()
+static_variables: double count, double accum_val
+init: 
+accum_val = 0.0;
+count=0.0;
+code:
+count += 1.0;
+accum_val += in;
+if (clkedge.inp(clk))
+   {
+    out = accum_val/count;
+    accum_val = 0.0;
+    count = 0.0;
+   }

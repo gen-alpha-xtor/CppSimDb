@@ -1,0 +1,12 @@
+module: sampler_interp
+parameters:
+inputs: double in, double_interp clk
+outputs:  double out
+static_variables: double prev_in;
+classes: EdgeDetect rising_edge()
+init:
+prev_in = 0.0;
+code:
+if (rising_edge.inp(clk))
+   out = (prev_in*(clk+1.0) + in*(-clk+1.0))/2.0;
+prev_in = in;

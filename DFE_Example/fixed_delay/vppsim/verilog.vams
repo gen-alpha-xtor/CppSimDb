@@ -1,0 +1,30 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module fixed_delay(out, in);
+
+   parameter delay = 0.0000000000e+00;
+   input in;
+   output out;
+
+   wreal in;
+   real in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign in_rv = in;
+      end
+
+   always
+      begin
+        #1
+        $fixed_delay_cpp(in_rv,out_rv,delay);
+      end
+
+endmodule
+

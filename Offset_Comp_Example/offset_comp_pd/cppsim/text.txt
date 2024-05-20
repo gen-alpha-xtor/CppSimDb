@@ -1,0 +1,16 @@
+module: offset_comp_pd
+parameters: double fp
+inputs: double in double inb
+outputs: double out double outb
+static_variables:
+classes: 
+Filter filt1("K","1 + 1/(2*pi*fp)*s","K,fp,Ts",1,fp,Ts);
+Filter filt2("K","1 + 1/(2*pi*fp)*s","K,fp,Ts",1,fp,Ts);
+init:
+ out = 0.0;
+ outb = 0.0;
+code:
+  filt1.inp(in);
+  filt2.inp(inb);
+  out = filt1.out;
+  outb = filt2.out;

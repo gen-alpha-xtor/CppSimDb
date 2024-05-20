@@ -1,0 +1,12 @@
+module: twenty_db_rolloff_noise
+parameters: double n_off, double f_off
+inputs: 
+outputs:  double out
+static_variables: double noise_var, double e
+classes: Filter filt("1","s","Ts",Ts), Rand randg("gauss");
+init: 
+noise_var = f_off*f_off*pow(10.0,n_off/10.0);
+code:
+e = sqrt(noise_var/Ts)*randg.inp();
+filt.inp(e);
+out = filt.out;

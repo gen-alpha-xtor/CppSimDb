@@ -1,0 +1,24 @@
+module: cdr_counter_pg
+description: CDR phase counter - increments/decrements or holds the value 
+based on inputs, within a pre-determined counter range
+parameters: int range
+inputs:  double inc_dec double enable_b double clk
+outputs: int count 
+classes: EdgeDetect pos_edge(); Delay delay_clk(5);
+	 Probe	    probe1("phase.tr0");
+init: count=0;
+code: 
+delay_clk.inp(clk);
+if (pos_edge.inp(delay_clk.out))
+   {
+//    printf("\nphase: %d", count);
+    if (enable_b<0)
+       count += (int)inc_dec;
+    count = count % range;
+    if (count<0)
+       count += range;
+
+    count = 5;	// the output phase is fixed for pre-emphasis adatpation
+    probe1.inp(count, "phase");
+
+   }

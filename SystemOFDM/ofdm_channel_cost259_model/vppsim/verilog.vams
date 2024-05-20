@@ -1,0 +1,38 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module ofdm_channel_cost259_model(out_i, out_q, in_i, in_q);
+
+   parameter model = 0;
+   input in_i;
+   input in_q;
+   output out_i;
+   output out_q;
+
+   wreal in_i;
+   real in_i_rv;
+   wreal in_q;
+   real in_q_rv;
+   wreal out_i;
+   real out_i_rv;
+   wreal out_q;
+   real out_q_rv;
+
+   assign out_i = out_i_rv;
+   assign out_q = out_q_rv;
+
+   initial
+      begin
+        assign in_i_rv = in_i;
+        assign in_q_rv = in_q;
+      end
+
+   always
+      begin
+        #1
+        $ofdm_channel_cost259_model_cpp(in_i_rv,in_q_rv,out_i_rv,out_q_rv,model);
+      end
+
+endmodule
+

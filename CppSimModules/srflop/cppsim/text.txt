@@ -1,0 +1,14 @@
+module: srflop
+parameters:
+inputs:  double s double r
+outputs:  double q double qb
+classes: Or or1() Or or2();
+static_variables:
+init:
+qb=-1;
+q=1;
+code:
+or1.inp(-or2.out,s);
+or2.inp(-or1.out,r);
+q=-or2.out;
+qb=-or1.out;

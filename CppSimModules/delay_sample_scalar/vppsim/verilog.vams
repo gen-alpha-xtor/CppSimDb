@@ -1,0 +1,30 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module delay_sample_scalar(out, in);
+
+   parameter delay = 0;
+   input in;
+   output out;
+
+   wreal in;
+   real in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign in_rv = in;
+      end
+
+   always
+      begin
+        #1
+        $delay_sample_scalar_cpp(in_rv,out_rv,delay);
+      end
+
+endmodule
+

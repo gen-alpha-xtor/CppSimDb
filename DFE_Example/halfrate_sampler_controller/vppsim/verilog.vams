@@ -1,0 +1,45 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module halfrate_sampler_controller(control_even, control_evenb, control_odd, control_oddb, clk_halfrate, data_prev);
+
+   input clk_halfrate;
+   input data_prev;
+   output control_even;
+   output control_evenb;
+   output control_odd;
+   output control_oddb;
+
+   wreal clk_halfrate;
+   real clk_halfrate_rv;
+   wreal data_prev;
+   real data_prev_rv;
+   wreal control_even;
+   real control_even_rv;
+   wreal control_evenb;
+   real control_evenb_rv;
+   wreal control_odd;
+   real control_odd_rv;
+   wreal control_oddb;
+   real control_oddb_rv;
+
+   assign control_even = control_even_rv;
+   assign control_evenb = control_evenb_rv;
+   assign control_odd = control_odd_rv;
+   assign control_oddb = control_oddb_rv;
+
+   initial
+      begin
+        assign clk_halfrate_rv = clk_halfrate;
+        assign data_prev_rv = data_prev;
+      end
+
+   always
+      begin
+        #1
+        $halfrate_sampler_controller_cpp(clk_halfrate_rv,data_prev_rv,control_even_rv,control_evenb_rv,control_odd_rv,control_oddb_rv);
+      end
+
+endmodule
+

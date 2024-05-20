@@ -1,0 +1,30 @@
+module: int_vector16_constant
+description:  creates output vector with 16 integer elements
+parameters:
+   int elem0, int elem1, int elem2, int elem3
+   int elem4, int elem5, int elem6, int elem7
+   int elem8, int elem9, int elem10, int elem11
+   int elem12, int elem13, int elem14, int elem15   
+inputs: 
+outputs:  IntVector vec_out
+static_variables:
+classes:
+set_output_vector_lengths: vec_out=16
+init:
+   vec_out.set_elem(0,elem0);
+   vec_out.set_elem(1,elem1);
+   vec_out.set_elem(2,elem2);
+   vec_out.set_elem(3,elem3);
+   vec_out.set_elem(4,elem4);
+   vec_out.set_elem(5,elem5);
+   vec_out.set_elem(6,elem6);
+   vec_out.set_elem(7,elem7);
+   vec_out.set_elem(8,elem8);
+   vec_out.set_elem(9,elem9);
+   vec_out.set_elem(10,elem10);
+   vec_out.set_elem(11,elem11);
+   vec_out.set_elem(12,elem12);
+   vec_out.set_elem(13,elem13);
+   vec_out.set_elem(14,elem14);
+   vec_out.set_elem(15,elem15);
+code:

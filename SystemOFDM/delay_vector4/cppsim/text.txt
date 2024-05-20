@@ -1,0 +1,32 @@
+module: delay_vector4
+description: design a time-delay filter for vectors: delta[n-delay]. delay must be an integer. 
+             delay each element of vector by "delay" samples
+             4 is the length of vector
+parameters: int delay 
+inputs: Vector vec_in
+outputs: Vector vec_out
+classes: Filter filt0("1-z^-1","1"), Filter filt1("1-z^-1","1"), Filter filt2("1-z^-1","1"), Filter filt3("1-z^-1","1")
+static_variables: 
+init:
+  if (vec_in.get_length() != 4)
+    {
+     printf("error in 'delay_vector4': input vector must have length 4\n");
+     printf("  in this case, input vector '%s' has length %d\n",
+     vec_in.get_name(),vec_in.get_length());
+     exit(1);
+    }
+  filt0.set("z^-no","1","no",delay);
+  filt1.set("z^-no","1","no",delay);
+  filt2.set("z^-no","1","no",delay);
+  filt3.set("z^-no","1","no",delay);
+set_output_vector_lengths: vec_out=4
+code:
+  int i;
+  filt0.inp(vec_in.get_elem(0));
+  vec_out.set_elem(0,filt0.out);
+  filt1.inp(vec_in.get_elem(1));
+  vec_out.set_elem(1,filt1.out);
+  filt2.inp(vec_in.get_elem(2));
+  vec_out.set_elem(2,filt2.out);
+  filt3.inp(vec_in.get_elem(3));
+  vec_out.set_elem(3,filt3.out);

@@ -1,0 +1,50 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module wb_dac_en(idac, clk, phi0, phi1, residue, swap);
+
+   parameter dacbits = 0;
+   parameter idac_val = 0.0000000000e+00;
+   parameter mm = 0.0000000000e+00;
+   parameter mmstddev = 0.0000000000e+00;
+   parameter dwaen = 0.0000000000e+00;
+   input clk;
+   input phi0;
+   input phi1;
+   input residue;
+   input swap;
+   output idac;
+
+   wreal clk;
+   real clk_rv;
+   wreal phi0;
+   real phi0_rv;
+   wreal phi1;
+   real phi1_rv;
+   wreal residue;
+   real residue_rv;
+   wreal swap;
+   real swap_rv;
+   wreal idac;
+   real idac_rv;
+
+   assign idac = idac_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign phi0_rv = phi0;
+        assign phi1_rv = phi1;
+        assign residue_rv = residue;
+        assign swap_rv = swap;
+      end
+
+   always
+      begin
+        #1
+        $wb_dac_en_cpp(clk_rv,phi0_rv,phi1_rv,residue_rv,swap_rv,idac_rv,dacbits,idac_val,mm,mmstddev,dwaen);
+      end
+
+endmodule
+

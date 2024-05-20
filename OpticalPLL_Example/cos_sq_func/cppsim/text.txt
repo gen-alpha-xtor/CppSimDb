@@ -1,0 +1,9 @@
+module: cos_sq_func
+parameters:
+inputs: double in 
+outputs: double out
+classes: 
+static_variables:
+init: 
+code:
+out = cos(pi*in)*cos(pi*in);

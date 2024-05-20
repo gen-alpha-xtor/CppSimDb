@@ -1,0 +1,30 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module gain(y, a);
+
+   parameter gain = 0.0000000000e+00;
+   input a;
+   output y;
+
+   wreal a;
+   real a_rv;
+   wreal y;
+   real y_rv;
+
+   assign y = y_rv;
+
+   initial
+      begin
+        assign a_rv = a;
+      end
+
+   always
+      begin
+        #1
+        $gain_cpp(a_rv,y_rv,gain);
+      end
+
+endmodule
+

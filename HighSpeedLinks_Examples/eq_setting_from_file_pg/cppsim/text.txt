@@ -1,0 +1,171 @@
+module: eq_setting_from_file_pg
+
+description: First, it loads the pre-emphasis taps from the file. Second, it adapts the taps 
+	     based on the transmitted data/channal output. Dlev is fixed for this version. You 
+	     may want to make dlve adaptive too.
+
+parameters: int num_tap			 double dlev
+	    double adapt_divide_rate	 double stepsize
+	    double ratio
+
+inputs:	    double tx_clk	double_interp	tx_data 
+	    double rx_clk	double		rx_signal
+	    double del		double		lckflag
+
+outputs:    double_interp clk_adapt	Vector vec_out	
+
+classes: List list1()
+
+
+	 List	txdatalist()	
+	 List	deltalist()
+	 List	pickerlist()
+
+	 EdgeDetect txclkedge()
+	 EdgeDetect rxclkedge()
+	 EdgeDetect clkadaptedge()
+
+	 Probe	    proberr("err.tr0");
+
+	 Delay delayTxData();
+
+set_output_vector_lengths: vec_out=num_tap
+
+static_variables:	   int	clk_adapt_cnt
+			   int	errwrite_cnt
+			   double	dlevadapt
+
+
+init:
+   txdatalist.load("eq_taps.dat");
+   txdatalist.mul(0);		// txdatalist is set to be 0, 0, 0, 0, 0
+
+   deltalist.load("eq_taps.dat");
+   deltalist.mul(0);		// deltalist is set to be 0, 0, 0, 0, 0
+
+   pickerlist.load("eq_taps.dat");
+   pickerlist.mul(0);
+   pickerlist.reset();
+   pickerlist.write(0);
+   pickerlist.write(1);
+   pickerlist.write(1);
+   pickerlist.write(0);
+   pickerlist.write(0);
+   pickerlist.reset();		// pickerlist is set to be 0 1 1 0 0
+				// in this way, only the first two taps are adaptive
+
+	
+   list1.load("eq_taps.dat");     
+   list1.print("eq_taps_loaded");
+   copy(list1, vec_out);	// set the initial taps
+   clk_adapt = -1;
+   clk_adapt_cnt = 0;
+   errwrite_cnt = 0;
+
+   dlevadapt = dlev;
+
+code:
+
+int i;
+double tmp1, tmp2, tmp3, tmp4, tmp5;
+
+delayTxData.inp(tx_data, del*ratio); //	align the transmitted data and channel out signal
+
+// Generate the adapation clock
+if (txclkedge.inp(tx_clk) && lckflag > 0)
+{
+   clk_adapt_cnt ++;
+   if (clk_adapt_cnt == (int)( adapt_divide_rate / 2) )
+      clk_adapt = 1;
+   else if (clk_adapt_cnt == (int)( adapt_divide_rate ) )
+   {
+      clk_adapt = -1;
+      clk_adapt_cnt = 1;
+    }
+
+}   
+
+if (rxclkedge.inp(rx_clk))
+{
+   errwrite_cnt ++; 
+
+// Record the transmitted bits. txdatalist becomes a 5-bit FIFO
+   txdatalist.remove_first_entry();
+   txdatalist.inp(delayTxData.out);
+
+   if ( delayTxData.out == 1 )  // adapt only on the positive data
+			       // 'training' mode instead of 'decision directed' mode
+   {
+      txdatalist.reset();	// reset the pointer of the list to the head
+      deltalist.flush();	// delete all the elements of deltalist 
+      i = 0;
+
+      proberr.inp(rx_signal , "sig");
+      proberr.inp(dlevadapt , "dlevadapt");
+      
+//////////////////////////////////////////////////////////////////
+/////////   Edit this part to make it adaptive    ////////////////
+//////////////////////////////////////////////////////////////////
+
+    if (rx_signal - dlevadapt > 0)  //case:  error >0
+     {
+         while (txdatalist.notdone )
+         {
+           if (txdatalist.read() > 0)
+              deltalist.inp(-1 * stepsize * (rx_signal - dlevadapt) );      //generates deltas for taps
+           else
+              deltalist.inp(	 stepsize * (rx_signal - dlevadapt) );
+         }
+	 dlevadapt += stepsize * (rx_signal - dlevadapt) ;
+      }
+     else                      //case:  error < 0
+     {
+         while (txdatalist.notdone )
+         {
+           if (txdatalist.read() > 0)
+              deltalist.inp( -1*  stepsize * (rx_signal - dlevadapt) );     //generates deltas for taps
+           else
+              deltalist.inp(      stepsize * (rx_signal - dlevadapt) );
+         }
+	 dlevadapt += stepsize * (rx_signal - dlevadapt);
+      }
+
+//////////////////////////////////////////////////////////////////
+/////////		 End of Edit		  ////////////////
+//////////////////////////////////////////////////////////////////
+
+
+//       deltalist.print("deltalist");	// for debug
+//       getchar();
+    }
+}   
+
+if (clkadaptedge.inp(clk_adapt))	// adapt the taps
+{
+   errwrite_cnt = 0;
+
+   deltalist.reset();
+				
+   tmp1 = deltalist.read();		//reverse the delta list
+   tmp2 = deltalist.read();
+   tmp3 = deltalist.read();
+   tmp4 = deltalist.read();
+   tmp5 = deltalist.read();
+   deltalist.flush();
+   deltalist.inp(tmp5);
+   deltalist.inp(tmp4);
+   deltalist.inp(tmp3);
+   deltalist.inp(tmp2);  
+   deltalist.inp(tmp1);  
+	
+   deltalist.mul(pickerlist);		//only the allowed taps are adapted
+   list1.add(deltalist);		//adapt the taps
+
+   copy(list1, vec_out);		//send the taps to the output
+}
+   
+
+
+
+  
+

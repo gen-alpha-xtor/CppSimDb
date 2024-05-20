@@ -1,0 +1,35 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module vco(sineout, squareout, vctrl);
+
+   parameter freq = 0.0000000000e+00;
+   parameter kvco = 0.0000000000e+00;
+   input vctrl;
+   output sineout;
+   output squareout;
+
+   wreal vctrl;
+   real vctrl_rv;
+   wreal sineout;
+   real sineout_rv;
+   wreal squareout;
+   real squareout_rv;
+
+   assign sineout = sineout_rv;
+   assign squareout = squareout_rv;
+
+   initial
+      begin
+        assign vctrl_rv = vctrl;
+      end
+
+   always
+      begin
+        #1
+        $vco_cpp(vctrl_rv,sineout_rv,squareout_rv,freq,kvco);
+      end
+
+endmodule
+

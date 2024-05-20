@@ -1,0 +1,45 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module err_counter(ber, counter, del, clk, rx_data, tx_data);
+
+   parameter ratio = 0;
+   input clk;
+   input rx_data;
+   input tx_data;
+   output ber;
+   output [31:0] counter;
+   output del;
+
+   wreal clk;
+   real clk_rv;
+   wreal rx_data;
+   real rx_data_rv;
+   wreal tx_data;
+   real tx_data_rv;
+   wreal ber;
+   real ber_rv;
+   integer counter_iv;
+   wreal del;
+   real del_rv;
+
+   assign ber = ber_rv;
+   assign counter = counter_iv;
+   assign del = del_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign rx_data_rv = rx_data;
+        assign tx_data_rv = tx_data;
+      end
+
+   always
+      begin
+        #1
+        $err_counter_cpp(clk_rv,rx_data_rv,tx_data_rv,ber_rv,counter_iv,del_rv,ratio);
+      end
+
+endmodule
+

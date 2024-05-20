@@ -1,0 +1,22 @@
+//Verilog-AMS HDL for "CppSimModules", "E2W" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module E2W ( in, out );
+
+  input in;
+  output out;
+
+  wreal out;
+  real out_rv;
+  electrical in;
+
+  assign out = out_rv;
+
+  always
+    begin
+      #1
+      out_rv = V(in);
+    end
+endmodule

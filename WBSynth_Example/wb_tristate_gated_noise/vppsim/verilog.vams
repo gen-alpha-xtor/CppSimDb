@@ -1,0 +1,31 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module wb_tristate_gated_noise(out, mux_in);
+
+   parameter varpos = 0.0000000000e+00;
+   parameter varneg = 0.0000000000e+00;
+   input mux_in;
+   output out;
+
+   wreal mux_in;
+   real mux_in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign mux_in_rv = mux_in;
+      end
+
+   always
+      begin
+        #1
+        $wb_tristate_gated_noise_cpp(mux_in_rv,out_rv,varpos,varneg);
+      end
+
+endmodule
+

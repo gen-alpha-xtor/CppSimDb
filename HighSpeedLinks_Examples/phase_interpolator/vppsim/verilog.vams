@@ -1,0 +1,42 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module phase_interpolator(clk_adapt, clk_data, clk_edge, clk, phase_select);
+
+   parameter num_phases = 0;
+   parameter clk_freq = 0.0000000000e+00;
+   input clk;
+   input [31:0] phase_select;
+   output clk_adapt;
+   output clk_data;
+   output clk_edge;
+
+   wreal clk;
+   real clk_rv;
+   integer phase_select_iv;
+   wreal clk_adapt;
+   real clk_adapt_rv;
+   wreal clk_data;
+   real clk_data_rv;
+   wreal clk_edge;
+   real clk_edge_rv;
+
+   assign clk_adapt = clk_adapt_rv;
+   assign clk_data = clk_data_rv;
+   assign clk_edge = clk_edge_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign phase_select_iv = phase_select;
+      end
+
+   always
+      begin
+        #1
+        $phase_interpolator_cpp(clk_rv,phase_select_iv,clk_adapt_rv,clk_data_rv,clk_edge_rv,num_phases,clk_freq);
+      end
+
+endmodule
+

@@ -1,0 +1,46 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module cdr_maj_vote(hold, up_down, clk, div_clk, early_late, valid_transition);
+
+   parameter num_maj_votes = 0;
+   input clk;
+   input div_clk;
+   input early_late;
+   input valid_transition;
+   output hold;
+   output up_down;
+
+   wreal clk;
+   real clk_rv;
+   wreal div_clk;
+   real div_clk_rv;
+   wreal early_late;
+   real early_late_rv;
+   wreal valid_transition;
+   real valid_transition_rv;
+   wreal hold;
+   real hold_rv;
+   wreal up_down;
+   real up_down_rv;
+
+   assign hold = hold_rv;
+   assign up_down = up_down_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign div_clk_rv = div_clk;
+        assign early_late_rv = early_late;
+        assign valid_transition_rv = valid_transition;
+      end
+
+   always
+      begin
+        #1
+        $cdr_maj_vote_cpp(clk_rv,div_clk_rv,early_late_rv,valid_transition_rv,hold_rv,up_down_rv,num_maj_votes);
+      end
+
+endmodule
+

@@ -1,0 +1,10 @@
+module: divider_ideal
+parameters: 
+inputs: double_interp in, double div_val
+outputs:  double_interp out
+static_variables:
+classes: Divider div1();
+init: 
+code:
+div1.inp(in, div_val);
+out = div1.out;

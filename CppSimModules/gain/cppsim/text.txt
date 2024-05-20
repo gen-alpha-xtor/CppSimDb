@@ -1,0 +1,11 @@
+module: gain
+parameters: double gain
+inputs: double a 
+outputs: double y
+classes: 
+static_variables:
+init: 
+code:
+y=a*gain;
+
+

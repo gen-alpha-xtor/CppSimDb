@@ -1,0 +1,16 @@
+module: bernoulli_source
+description: 
+  Produce a random white sequence whose sample 
+  values are 0 or 1 with equal probablity
+parameters:
+inputs: double clk
+outputs: int out
+classes: Rand data("bernoulli"), EdgeDetect clkedge()
+static_variables:
+init:
+   out = 0;
+code:
+   if (clkedge.inp(clk))
+      {
+       out = data.inp() > 0.0 ? 1 : 0;
+      }

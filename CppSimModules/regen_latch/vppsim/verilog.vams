@@ -1,0 +1,35 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module regen_latch(q, clk, d);
+
+   parameter gain = 0.0000000000e+00;
+   parameter f_bw = 0.0000000000e+00;
+   input clk;
+   input d;
+   output q;
+
+   wreal clk;
+   real clk_rv;
+   wreal d;
+   real d_rv;
+   wreal q;
+   real q_rv;
+
+   assign q = q_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign d_rv = d;
+      end
+
+   always
+      begin
+        #1
+        $regen_latch_cpp(clk_rv,d_rv,q_rv,gain,f_bw);
+      end
+
+endmodule
+

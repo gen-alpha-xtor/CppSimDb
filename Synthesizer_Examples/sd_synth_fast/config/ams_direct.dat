@@ -1,0 +1,15 @@
+$FILE_FORMAT_VERSION
+	Version 1.1;
+$END
+$TIMESTAMP
+	1141232299355=lastUpdateTime;
+$END
+$RUN_DIR_INFO
+	1141232307000:7-dirName51-/export/home0/perrott/AMSD/Design/sd_synth_fast_run8-snapShot30-sd_synth_fast:ams1141231068416;
+$END
+$ALWAYS_USE_RUN_DIR
+	/export/home0/perrott/AMSD/Design/sd_synth_fast_run;
+$END
+$SNAPSHOT_LIST
+	8-Snapshot30-sd_synth_fast:ams11412310684166-Solver7-Spectre7-CdsPlat5-lnx86;
+$END

@@ -1,0 +1,2 @@
+module: ofdm_receiver_discrete
+sim_order: xi0 xi1 xi2 xi3 xi6 xi8 xi9 xi7 xi10 xi4 xi11 xi5

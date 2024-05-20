@@ -1,0 +1,15 @@
+module: wb_int_reset
+description: continuous time integrator with reset function
+parameters:
+inputs: double in double reset
+outputs: double out
+static_variables:
+classes: Filter filt1("1","s","Ts",Ts) EdgeDetect edge1()
+init:
+code:
+filt1.inp(in);
+out=filt1.out;
+if (edge1.inp(reset))
+{
+filt1.reset(0.0);
+}

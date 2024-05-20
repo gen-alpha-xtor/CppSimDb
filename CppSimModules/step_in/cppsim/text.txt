@@ -1,0 +1,12 @@
+module: step_in
+parameters: double vend double vstart double tstep
+inputs:  
+outputs:  double step
+classes: 
+static_variables: double i
+init: 
+i=0.0;
+step = vstart;
+code:
+i += 1.0;
+step = i*Ts > tstep ? vend : vstart;

@@ -1,0 +1,26 @@
+module: gmsk_data_generator
+parameters: int enable, int data_period
+inputs: double clk
+outputs: double out
+classes: Rand datagen("bernoulli"), EdgeDetect clkedge()
+static_variables: int count
+init: 
+datagen.reset();
+count=1;
+if (enable == 1)
+   out = 1.0;
+else
+   out = 0.0;
+code:
+if (clkedge.inp(clk))
+   {
+   if (count == data_period)
+     {
+     count=0;
+     if (enable == 1)
+        out = datagen.inp();
+     else
+        out = 0.0; 
+     }
+   count++;
+   }

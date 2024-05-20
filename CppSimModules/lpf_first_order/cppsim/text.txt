@@ -1,0 +1,10 @@
+module: lpf_first_order
+parameters: double fp, double gain
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("K","1 + 1/(2*pi*fp)*s","K,fp,Ts",gain,fp,Ts);
+init: 
+code:
+filt.inp(in);
+out = filt.out;

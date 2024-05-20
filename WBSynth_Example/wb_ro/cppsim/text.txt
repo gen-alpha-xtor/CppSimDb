@@ -1,0 +1,18 @@
+module: wb_ro
+description: current source with finite rout
+parameters: double vgt double rout double inom double vnom
+inputs: double vds double pulse
+outputs:  double iout
+static_variables: 
+classes:
+init: 
+iout=0;
+code:
+if (vds<= vgt)
+{
+iout = pulse*2*(inom-(vnom-vgt)/rout)*(vgt*vds-(vds*vds/2))/(vgt*vgt);
+}
+else
+{
+iout=pulse*inom*(1+(vds-vnom)/(inom*rout));
+}

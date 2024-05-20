@@ -1,0 +1,33 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module mixer(y, a, b);
+
+   input a;
+   input b;
+   output y;
+
+   wreal a;
+   real a_rv;
+   wreal b;
+   real b_rv;
+   wreal y;
+   real y_rv;
+
+   assign y = y_rv;
+
+   initial
+      begin
+        assign a_rv = a;
+        assign b_rv = b;
+      end
+
+   always
+      begin
+        #1
+        $mixer_cpp(a_rv,b_rv,y_rv);
+      end
+
+endmodule
+

@@ -1,0 +1,10 @@
+module: wb_delay
+parameters: double delay
+inputs: double_interp in
+outputs: double_interp out
+classes: Delay delay2(delay/Ts)  
+static_variables:
+init:
+code:
+    delay2.inp(in);
+    out = delay2.out;

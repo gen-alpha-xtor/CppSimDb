@@ -1,0 +1,7 @@
+module: int_to_bool
+inputs: int in
+outputs: bool out[31:0]
+code:
+int i;
+
+out.set_decimal_value(in);

@@ -1,0 +1,46 @@
+module: ofdm_add_cyclicprefix
+description:  adds num_cp subchannels from the end of IFFT to the beginning
+parameters: int num_channels, int num_cp
+inputs: Vector vec_in_i, Vector vec_in_q, double clk_frame
+outputs:  Vector vec_out_i, Vector vec_out_q
+static_variables: 
+classes: EdgeDetect clk_frame_edge()
+set_output_vector_lengths:
+  vec_out_i=num_channels+num_cp
+  vec_out_q=num_channels+num_cp
+init:
+  if (num_cp > num_channels)
+    {
+    printf("error in 'ofdm_add_cyclicprefix': num_cp must be <= num_channels\n");
+    printf(" in this case num_cp is %d and num_channels is %d\n", 
+            num_cp, num_channels);
+    exit(1);        
+    }
+  if (vec_in_i.get_length() != num_channels ||
+      vec_in_q.get_length() != num_channels)
+      {
+       printf("error in 'ofdm_add_cyclicprefix':  input qam vectors must have length\n");
+       printf("  equal to 'num_channels' ( = %d in this case)\n",
+                 num_channels);
+       printf("  in this case, length of vec_in_i = %d\n",
+                    vec_in_i.get_length());
+       printf("  and length of vec_in_q = %d\n",
+                    vec_in_q.get_length());
+       printf("  num_channels = %d\n",num_channels);
+       exit(1);
+      }
+code:
+  int i;
+  if (clk_frame_edge.inp(clk_frame))
+    {
+     for (i=0; i<num_cp; i++)
+        {
+            vec_out_i.set_elem(i, vec_in_i.get_elem(i + num_channels - num_cp));
+            vec_out_q.set_elem(i, vec_in_q.get_elem(i + num_channels - num_cp));
+        }
+     for (i=num_cp; i<(num_cp + num_channels); i++)
+        {
+            vec_out_i.set_elem(i, vec_in_i.get_elem(i-num_cp));
+            vec_out_q.set_elem(i, vec_in_q.get_elem(i-num_cp));            
+        }
+    }

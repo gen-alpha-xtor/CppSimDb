@@ -1,0 +1,37 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module gaussian_transmit_filter(out, clk, in);
+
+   parameter h = 0.0000000000e+00;
+   parameter data_period = 0;
+   parameter filt_periods = 0;
+   parameter bt = 0.0000000000e+00;
+   input clk;
+   input in;
+   output out;
+
+   wreal clk;
+   real clk_rv;
+   wreal in;
+   real in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign in_rv = in;
+      end
+
+   always
+      begin
+        #1
+        $gaussian_transmit_filter_cpp(clk_rv,in_rv,out_rv,h,data_period,filt_periods,bt);
+      end
+
+endmodule
+

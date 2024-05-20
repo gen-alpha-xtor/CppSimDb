@@ -1,0 +1,10 @@
+module: xor2
+parameters: 
+inputs: double_interp a, double_interp b
+outputs:  double_interp y
+static_variables:
+classes: Xor xor1()
+init: 
+code:
+xor1.inp(a,b);
+y = xor1.out;

@@ -1,0 +1,10 @@
+module: mixer
+parameters:
+inputs: double a double b
+outputs: double y
+static_variables:
+classes:
+init:
+
+code:
+y=a*b;

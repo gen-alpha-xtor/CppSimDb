@@ -1,0 +1,9 @@
+module: sin_sq_func
+parameters:
+inputs: double in 
+outputs: double out
+classes: 
+static_variables:
+init: 
+code:
+out = sin(pi*in)*sin(pi*in);

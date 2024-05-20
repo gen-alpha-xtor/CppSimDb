@@ -1,0 +1,10 @@
+module: biquad_filter
+parameters: double a2, double a3, double b1, double b2, double b3
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("b1 + b2*s + b3*s^2","1 + a2*s + a3*s^2","b1,b2,b3,a2,a3,Ts",b1,b2,b3,a2,a3,Ts);
+init: 
+code:
+filt.inp(in);
+out = filt.out;

@@ -1,0 +1,18 @@
+//Verilog-AMS HDL for "CppSimModules", "constant" "verilogams"
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module constant ( out );
+
+output out;
+parameter consval = 0;
+
+real out_rv;
+
+assign out = out_rv;
+initial begin
+  out_rv = consval;
+end
+
+endmodule

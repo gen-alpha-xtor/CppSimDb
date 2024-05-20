@@ -1,0 +1,27 @@
+module: ofdm_frame_clk_gating_logic
+description:  guarantees that first frame edge occurs after
+              a sufficient number of clock cycles have passed
+parameters:
+inputs: double_interp clk_frame_in
+outputs:  double_interp clk_frame_out
+static_variables: int gate_flag
+classes: EdgeDetect clk_frame_edge()
+init:
+  gate_flag = 0;
+code:
+  if (clk_frame_edge.inp(clk_frame_in))
+     {
+      if (gate_flag == 0)
+         gate_flag = 1;
+     }
+  if (clk_frame_edge.inp(-clk_frame_in))
+     {
+      if (gate_flag == 1)
+         gate_flag = 2;
+     }
+  if (gate_flag == 2)
+    {
+     clk_frame_out = clk_frame_in;
+    }
+  else
+     clk_frame_out = -1.0;

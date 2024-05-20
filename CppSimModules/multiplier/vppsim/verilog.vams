@@ -1,0 +1,33 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module multiplier(out, in1, in2);
+
+   input in1;
+   input in2;
+   output out;
+
+   wreal in1;
+   real in1_rv;
+   wreal in2;
+   real in2_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign in1_rv = in1;
+        assign in2_rv = in2;
+      end
+
+   always
+      begin
+        #1
+        $multiplier_cpp(in1_rv,in2_rv,out_rv);
+      end
+
+endmodule
+

@@ -1,0 +1,34 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module int_to_non_neg_double(out, clk, in);
+
+   parameter b = 0;
+   parameter beta = 0;
+   input clk;
+   input [31:0] in;
+   output out;
+
+   wreal clk;
+   real clk_rv;
+   integer in_iv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign in_iv = in;
+      end
+
+   always
+      begin
+        #1
+        $int_to_non_neg_double_cpp(clk_rv,in_iv,out_rv,b,beta);
+      end
+
+endmodule
+

@@ -1,0 +1,44 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module ofdm_detector(vec_bits, vec_demod_i, vec_demod_q, clk_frame, vec_bit_settings, vec_dqam_i, vec_dqam_q);
+
+   parameter num_channels = 0;
+   input clk_frame;
+   input [31:0] vec_bit_settings;
+   input [31:0] vec_dqam_i;
+   input [31:0] vec_dqam_q;
+   output [31:0] vec_bits;
+   output [31:0] vec_demod_i;
+   output [31:0] vec_demod_q;
+
+   wreal clk_frame;
+   real clk_frame_rv;
+   integer vec_bit_settings_iv;
+   integer vec_dqam_i_iv;
+   integer vec_dqam_q_iv;
+   integer vec_bits_iv;
+   integer vec_demod_i_iv;
+   integer vec_demod_q_iv;
+
+   assign vec_bits = vec_bits_iv;
+   assign vec_demod_i = vec_demod_i_iv;
+   assign vec_demod_q = vec_demod_q_iv;
+
+   initial
+      begin
+        assign clk_frame_rv = clk_frame;
+        assign vec_bit_settings_iv = vec_bit_settings;
+        assign vec_dqam_i_iv = vec_dqam_i;
+        assign vec_dqam_q_iv = vec_dqam_q;
+      end
+
+   always
+      begin
+        #1
+        $ofdm_detector_cpp(clk_frame_rv,vec_bit_settings_iv,vec_dqam_i_iv,vec_dqam_q_iv,vec_bits_iv,vec_demod_i_iv,vec_demod_q_iv,num_channels);
+      end
+
+endmodule
+

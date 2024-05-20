@@ -1,0 +1,28 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module delay_sample_int(out, in);
+
+   parameter delay = 0;
+   input [31:0] in;
+   output [31:0] out;
+
+   integer in_iv;
+   integer out_iv;
+
+   assign out = out_iv;
+
+   initial
+      begin
+        assign in_iv = in;
+      end
+
+   always
+      begin
+        #1
+        $delay_sample_int_cpp(in_iv,out_iv,delay);
+      end
+
+endmodule
+

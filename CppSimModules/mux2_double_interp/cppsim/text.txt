@@ -1,0 +1,9 @@
+module: mux2_double_interp
+parameters: 
+inputs: double_interp in0, double_interp in1, double sel 
+outputs:  double_interp y
+static_variables:  double yz, int x1, List l1;
+classes:
+init: 
+code:
+y = sel > 0.0 ? in1 : in0;

@@ -1,0 +1,2 @@
+module: channel_model_trline
+sim_order: xi2 xi4 xi1 xi3 xi0 xi5 xi6

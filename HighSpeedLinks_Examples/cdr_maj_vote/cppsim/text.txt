@@ -1,0 +1,50 @@
+module: cdr_maj_vote
+description: CDR logic detects valid early/late signals from data and edge samples
+parameters: int num_maj_votes
+inputs:  double early_late double valid_transition double clk double div_clk
+outputs: double up_down double hold 
+classes: Filter maj_filter("1","1") EdgeDetect pos_edge1()  EdgeDetect pos_edge2() List filter_tap_list()
+static_variables:
+init: 
+for (int k=0;k<num_maj_votes;k++)
+    filter_tap_list.inp(1);
+// filter_tap_list.print("maj_filter_taps");
+maj_filter.set(filter_tap_list,"1");
+maj_filter.reset(0);
+code: 
+// create a multi-rate, packeted accumulator - majority vote filter
+if (pos_edge1.inp(clk))
+    if (valid_transition>0)
+    {
+        maj_filter.inp(early_late);
+//	printf("\nearly_late: %2.0lf", early_late);
+     }
+    else if (valid_transition<0)
+    {
+         maj_filter.inp(0);
+//	 printf("\nearly_late: 0");
+     }
+//     getchar();
+//up_down=maj_filter.out;
+if (pos_edge2.inp(div_clk))
+   {    
+    if (maj_filter.out>  0) //num_maj_votes/8.0 ) 
+        {
+          up_down= 1;
+          hold=-1;
+        }
+    else if (maj_filter.out<  0) //num_maj_votes/8.0)
+        {
+          up_down= -1;
+          hold=-1;
+        }
+    else
+        {
+         up_down=0;
+         hold=1;
+        }
+
+//    printf("\n\\nmaj_filter.out = %3.2lf\n\n ", maj_filter.out);
+
+    maj_filter.reset(0.0);
+   }

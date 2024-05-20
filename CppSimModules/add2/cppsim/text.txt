@@ -1,0 +1,10 @@
+module: add2
+parameters: 
+inputs: double in1, double in2
+outputs:  double out
+static_variables:
+classes:
+init: 
+out = in1+in2;
+code:
+out = in1+in2;

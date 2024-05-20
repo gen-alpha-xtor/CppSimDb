@@ -1,0 +1,19 @@
+module: cpp_internal_double_interp_to_int_convert
+parameters: 
+inputs: double_interp in
+outputs:  int out
+static_variables:
+classes:
+init:
+out = 0; 
+code:
+if (out == 0)
+  {
+   if (in > 0.0)
+      out = 1;
+  }
+else
+  {
+   if (in <= 0.0)
+      out = 0;
+  }

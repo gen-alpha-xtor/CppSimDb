@@ -1,0 +1,33 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module latch1(q, d, latch);
+
+   input d;
+   input latch;
+   output q;
+
+   wreal d;
+   real d_rv;
+   wreal latch;
+   real latch_rv;
+   wreal q;
+   real q_rv;
+
+   assign q = q_rv;
+
+   initial
+      begin
+        assign d_rv = d;
+        assign latch_rv = latch;
+      end
+
+   always
+      begin
+        #1
+        $latch1_cpp(d_rv,latch_rv,q_rv);
+      end
+
+endmodule
+

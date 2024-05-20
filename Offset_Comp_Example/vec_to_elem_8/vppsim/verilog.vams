@@ -1,0 +1,57 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module vec_to_elem_8(vec_elem_0, vec_elem_1, vec_elem_2, vec_elem_3, vec_elem_4, vec_elem_5, vec_elem_6, vec_elem_7, vec_in);
+
+   parameter start_elem = 0;
+   input [31:0] vec_in;
+   output vec_elem_0;
+   output vec_elem_1;
+   output vec_elem_2;
+   output vec_elem_3;
+   output vec_elem_4;
+   output vec_elem_5;
+   output vec_elem_6;
+   output vec_elem_7;
+
+   integer vec_in_iv;
+   wreal vec_elem_0;
+   real vec_elem_0_rv;
+   wreal vec_elem_1;
+   real vec_elem_1_rv;
+   wreal vec_elem_2;
+   real vec_elem_2_rv;
+   wreal vec_elem_3;
+   real vec_elem_3_rv;
+   wreal vec_elem_4;
+   real vec_elem_4_rv;
+   wreal vec_elem_5;
+   real vec_elem_5_rv;
+   wreal vec_elem_6;
+   real vec_elem_6_rv;
+   wreal vec_elem_7;
+   real vec_elem_7_rv;
+
+   assign vec_elem_0 = vec_elem_0_rv;
+   assign vec_elem_1 = vec_elem_1_rv;
+   assign vec_elem_2 = vec_elem_2_rv;
+   assign vec_elem_3 = vec_elem_3_rv;
+   assign vec_elem_4 = vec_elem_4_rv;
+   assign vec_elem_5 = vec_elem_5_rv;
+   assign vec_elem_6 = vec_elem_6_rv;
+   assign vec_elem_7 = vec_elem_7_rv;
+
+   initial
+      begin
+        assign vec_in_iv = vec_in;
+      end
+
+   always
+      begin
+        #1
+        $vec_to_elem_8_cpp(vec_in_iv,vec_elem_0_rv,vec_elem_1_rv,vec_elem_2_rv,vec_elem_3_rv,vec_elem_4_rv,vec_elem_5_rv,vec_elem_6_rv,vec_elem_7_rv,start_elem);
+      end
+
+endmodule
+

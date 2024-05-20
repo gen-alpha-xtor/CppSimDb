@@ -1,0 +1,17 @@
+module: ofdm_clk_start_sample
+description: outputs sample number at the first rising edge of the input clk
+parameters:
+inputs: double clk_in
+outputs: int start_sample
+static_variables: int start_flag, int sample_count
+classes: EdgeDetect clk_edge()
+init:
+    start_flag = 0;
+    sample_count = 0;
+code:
+    sample_count ++;
+    if (clk_edge.inp(clk_in) && start_flag == 0)
+        {
+            start_sample = sample_count;
+            start_flag = 1;
+        }

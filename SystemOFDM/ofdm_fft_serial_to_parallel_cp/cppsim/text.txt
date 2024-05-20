@@ -1,0 +1,58 @@
+module: ofdm_fft_serial_to_parallel_cp
+description:  takes in the serial sampled values and turns them into the 
+              in-frame ofdm symbol vectors for input of fft
+parameters: int num_channels, int num_cp
+inputs: double serial_in_i, double serial_in_q, double clk_frame,
+        double clk_channel, IntVector vec_bit_settings
+outputs:  Vector vec_fft_i, Vector vec_fft_q
+static_variables: int frame_flag, int clk_count
+classes: EdgeDetect clk_frame_edge(), EdgeDetect clk_channel_edge()
+         Vector vec_buf_i(), Vector vec_buf_q(), 
+         IntVector cur_vec_bit_settings()
+set_output_vector_lengths:
+    vec_fft_i=num_channels + num_cp
+    vec_fft_q=num_channels + num_cp
+init:
+    frame_flag = -1;
+    clk_count = 0;
+    if (vec_bit_settings.get_length() != num_channels)
+       {
+       printf("error in 'ofdm_fft_serial_to_parallel_cp':  length of \n");
+       printf("   vec_bit_settings does not equal num_channels\n");
+       printf("   in this case, length of vec_bit_settings = %d\n",
+                vec_bit_settings.get_length());
+       printf("   num_channels = %d\n",num_channels);
+       exit(1);
+       }
+    vec_buf_i.set_length(num_channels + num_cp);
+    vec_buf_q.set_length(num_channels + num_cp);
+code:
+    int i; 
+     if (clk_frame_edge.inp(clk_frame))
+       {
+        if (frame_flag == 1)
+           {
+           frame_flag = 0;
+           if (clk_count != (num_channels+num_cp) )
+              {
+               printf("error in 'ofdm_fft_serial_to_parallel_cp' module\n");
+               printf("  clk_count != num_channels + num_cp \n");
+               printf("  -> in this case, clk_count = %d, num_channels + num_cp = %d\n",
+                    clk_count, num_channels+num_cp);
+               exit(1);
+               }
+           clk_count = 0;
+           copy(vec_buf_i, vec_fft_i);
+           copy(vec_buf_q, vec_fft_q);
+           }
+       }
+      if (clk_channel_edge.inp(clk_channel))
+        {
+        frame_flag = 1;
+        if (clk_count < (num_channels + num_cp) )
+           {
+           vec_buf_i.set_elem(clk_count,serial_in_i);
+           vec_buf_q.set_elem(clk_count,serial_in_q);
+           clk_count++;
+           }
+         }  

@@ -1,0 +1,25 @@
+module: trline_load
+parameters: double zol, double c, double zor
+inputs: double eil
+outputs: double erl, double out
+classes: 
+Filter Gamma_l("1","1")
+static_variables:
+init:
+if (zol+zor <= 0.0)
+{
+printf("Error in 'trline_junction': zol+zor must be > 0!\n");
+printf("   in this case, zol = %5.3e, zor = %5.3e\n",zol,zor);
+exit(1);
+}
+if (c < 0.0)
+{
+printf("Error in 'trline_junction': c must be >= 0!\n");
+printf("   in this case, c = %5.3e\n",c);
+exit(1);
+}
+Gamma_l.set("Zor-Zol-(C*Zor*Zol)*s","Zor+Zol+(C*Zor*Zol)*s","Ts,Zor,Zol,C",Ts,zor,zol,c);
+code:
+Gamma_l.inp(eil);
+erl = Gamma_l.out;
+out = eil+Gamma_l.out;

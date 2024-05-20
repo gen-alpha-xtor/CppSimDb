@@ -1,0 +1,54 @@
+module: int_order1_mash
+parameters: int b, int beta
+inputs: double in, double clk
+outputs:  double out, double error
+static_variables: int error_val
+int mask_b
+int mask_error
+int mask_out
+classes: EdgeDetect clkedge()
+init: 
+if (b > 32 || b < 1)
+  {
+   printf("error in 'int_order1_mash':  must have 1 <= b <= 32\n");
+   printf("   in this case, b = %d\n",b);
+   exit(1);
+ }
+if (beta > b || beta < 0)
+  {
+   printf("error in 'int_order1_mash':  must have 0 <= beta <= b\n");
+   printf("   in this case, beta = %d, b = %d\n",beta,b);
+   exit(1);
+ }
+if (b == 32) 
+   mask_b = ~0;
+else
+   mask_b = (1 << b) - 1;
+mask_error = (1 << beta) - 1;
+mask_out = mask_b ^ mask_error;
+error_val = 0;
+error = 0.0;
+out = 0.0;
+code:
+int in_val,out_val;
+
+
+if (clkedge.inp(clk))
+   {
+   in_val = (int) floor(in+0.5);
+   if ((in_val & (~mask_b)) == 0)
+      {
+       out_val = in_val + error_val;
+       error_val = out_val & mask_error;
+       out_val = (out_val & mask_out) >> beta;
+      }
+   else
+      {
+       printf("error in 'int_order1_mash':  input values must\n");
+       printf("      be constrained to 'b = %d bits'\n",b);
+       printf("in = %s\n",bit_print(in_val));
+       exit(1);
+      }
+   out = (double) out_val;
+   error = (double) error_val;
+   }

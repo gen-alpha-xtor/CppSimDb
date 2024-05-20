@@ -1,0 +1,23 @@
+module: phase_interpolator
+description: interpolate the phase of the clock based on the phase selection, generate
+in-phase (edge), quadrature (data) component and adaptive clock
+parameters: int num_phases double clk_freq
+inputs:  int phase_select double_interp clk
+outputs: double_interp clk_data double_interp clk_edge double_interp clk_adapt 
+classes: Delay delay_data(1/(2*clk_freq)/Ts) Delay delay_edge(0) Delay delay_adapt(1/(2*clk_freq)/Ts) 
+static_variables:
+
+init:
+code:
+
+double edge_delay = 1/clk_freq/Ts * (double)phase_select / (double) num_phases;
+double data_offset = (num_phases/2)/num_phases/clk_freq/Ts;
+double adapt_offset = data_offset;
+
+delay_edge.inp(clk, edge_delay);
+delay_data.inp(clk, edge_delay + data_offset);
+delay_adapt.inp(clk, edge_delay + adapt_offset);
+
+clk_edge = delay_edge.out;
+clk_data = delay_data.out;
+clk_adapt = delay_adapt.out;

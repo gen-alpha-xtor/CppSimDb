@@ -1,0 +1,41 @@
+module: qam_16
+description: Convert an integer (=4 bits) to a qam symbol using gray encoding, distance b/t symbols is 2 
+parameters:
+inputs: int x double clk
+outputs: double real, double imag
+classes: EdgeDetect clkedge()
+static_variables:
+init: 
+code:
+     if (x == 0) //0000
+	{real = 3; imag = 3;}  
+     else if (x == 1) //0001
+	{real = 1; imag = 3;}
+     else if (x == 3) //0011  
+	{real = -1; imag = 3;}
+     else if (x == 2) //0010
+	{real = -3; imag = 3;}
+     else if (x == 4) //0100
+	{real = 3;  imag = 1;}
+     else if (x == 5) //0101
+	{real = 1;  imag = 1;}
+     else if (x == 7) //0111
+	{real = -1; imag = 1;}
+     else if (x == 6) //0110
+	{real = -3; imag = 1;}
+     else if (x == 12) //1100
+	{real = 3; imag = -1;}
+     else if (x == 13) //1101
+	{real = 1; imag = -1;}
+     else if (x == 15) //1111
+	{real = -1; imag = -1;}
+     else if (x == 14) //1110
+	{real = -3; imag = -1;}
+     else if (x == 8) //1000
+	{real = 3; imag = -3;}
+     else if (x == 9) //1001
+	{real = 1; imag = -3;}
+     else if (x == 11) //1011
+	{real = -1; imag = -3;}
+     else if (x == 10) //1010
+	{real = -3; imag = -3;}

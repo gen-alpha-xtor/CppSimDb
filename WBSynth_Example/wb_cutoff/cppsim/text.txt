@@ -1,0 +1,30 @@
+module: wb_cutoff
+parameters: double swt
+inputs: double in
+outputs:  double out
+static_variables:
+classes: 
+init:
+code:
+if (swt > 0.0)
+{
+   if (in > 0.0)
+   {
+   out=in;
+   }
+   else
+   {
+   out=0.0;
+   }
+}
+else
+{
+   if (in < 0.0)
+   {
+    out=in;
+   }
+   else
+   {
+    out=0.0;
+   }
+}

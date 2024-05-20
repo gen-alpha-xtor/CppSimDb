@@ -1,0 +1,42 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module trline_source_impedance(out, in, outr, outr_p);
+
+   parameter zo = 0.0000000000e+00;
+   parameter zor = 0.0000000000e+00;
+   parameter amp = 0.0000000000e+00;
+   parameter offset = 0.0000000000e+00;
+   parameter sim_order = 0.0000000000e+00;
+   input in;
+   input outr;
+   input outr_p;
+   output out;
+
+   wreal in;
+   real in_rv;
+   wreal outr;
+   real outr_rv;
+   wreal outr_p;
+   real outr_p_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign in_rv = in;
+        assign outr_rv = outr;
+        assign outr_p_rv = outr_p;
+      end
+
+   always
+      begin
+        #1
+        $trline_source_impedance_cpp(in_rv,outr_rv,outr_p_rv,out_rv,zo,zor,amp,offset,sim_order);
+      end
+
+endmodule
+

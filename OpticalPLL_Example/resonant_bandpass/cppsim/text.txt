@@ -1,0 +1,10 @@
+module: resonant_bandpass
+parameters: double fo, double q
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("wo/Q*s","wo*wo + wo/Q*s + s^2","wo,Q,Ts",2*pi*fo,q,Ts)
+init: 
+code:
+filt.inp(in);
+out = filt.out;

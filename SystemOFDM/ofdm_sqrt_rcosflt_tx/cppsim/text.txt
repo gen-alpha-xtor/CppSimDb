@@ -1,0 +1,13 @@
+module: ofdm_sqrt_rcosflt_tx
+description: Filter taps of sqrt raised cosine filter are loaded from a file
+parameters: int taps
+inputs: double in
+outputs: double out
+classes: Filter filt("1","1"), List list1()
+static_variables:
+init: 
+    list1.load("rcosflt_tx.dat");
+    filt.set(list1,"1");
+code:
+    filt.inp(in);
+    out = filt.out;

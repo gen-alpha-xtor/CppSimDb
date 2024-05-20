@@ -1,0 +1,38 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module offset_comp_pd(out, outb, in, inb);
+
+   parameter fp = 0.0000000000e+00;
+   input in;
+   input inb;
+   output out;
+   output outb;
+
+   wreal in;
+   real in_rv;
+   wreal inb;
+   real inb_rv;
+   wreal out;
+   real out_rv;
+   wreal outb;
+   real outb_rv;
+
+   assign out = out_rv;
+   assign outb = outb_rv;
+
+   initial
+      begin
+        assign in_rv = in;
+        assign inb_rv = inb;
+      end
+
+   always
+      begin
+        #1
+        $offset_comp_pd_cpp(in_rv,inb_rv,out_rv,outb_rv,fp);
+      end
+
+endmodule
+

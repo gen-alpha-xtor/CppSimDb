@@ -1,0 +1,12 @@
+module: int_vector_pilotconstant
+description:  creates output vector with n(=length) elements downloaded from a file (vec_pilotbit_settings.dat)
+parameters: int length
+inputs: 
+outputs:  IntVector vec_out
+static_variables:
+classes: List list1()
+set_output_vector_lengths: vec_out=length
+init:
+   list1.load("vec_pilotbit_settings.dat");
+   copy(list1, vec_out);
+code:

@@ -1,0 +1,32 @@
+module: int_prbs_31_gen
+parameters:
+inputs:  double clk
+outputs:  double out
+static_variables: 
+int state
+int bit31_mask
+int bit30_mask
+int bit29_mask
+int bit28_mask
+classes: EdgeDetect clkedge()
+init: 
+state = 1;
+bit31_mask = 1 << 31;
+bit30_mask = 1 << 30;
+bit29_mask = 1 << 29;
+bit28_mask = 1 << 28;
+code:
+int bit31, bit30, bit29, bit28, temp;
+if (clkedge.inp(clk))
+   {
+   state = state << 1;
+   bit31 = (state & bit31_mask) == 0 ? 0 : 1;
+   bit30 = (state & bit30_mask) == 0 ? 0 : 1;
+   bit29 = (state & bit29_mask) == 0 ? 0 : 1;
+   bit28 = (state & bit28_mask) == 0 ? 0 : 1;
+   temp = bit31^bit30;
+   temp = temp^bit29;
+   temp = temp^bit28;
+   state = temp | state;
+   out = (double) bit31;
+   }

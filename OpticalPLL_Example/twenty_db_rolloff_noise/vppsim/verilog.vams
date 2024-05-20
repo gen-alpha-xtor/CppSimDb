@@ -1,0 +1,23 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module twenty_db_rolloff_noise(out);
+
+   parameter n_off = 0.0000000000e+00;
+   parameter f_off = 0.0000000000e+00;
+   output out;
+
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   always
+      begin
+        #1
+        $twenty_db_rolloff_noise_cpp(out_rv,n_off,f_off);
+      end
+
+endmodule
+

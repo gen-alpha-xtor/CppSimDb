@@ -1,0 +1,39 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module offset_comp_comp(y, z, a, b);
+
+   parameter compgain = 0.0000000000e+00;
+   parameter hyst = 0.0000000000e+00;
+   input a;
+   input b;
+   output y;
+   output z;
+
+   wreal a;
+   real a_rv;
+   wreal b;
+   real b_rv;
+   wreal y;
+   real y_rv;
+   wreal z;
+   real z_rv;
+
+   assign y = y_rv;
+   assign z = z_rv;
+
+   initial
+      begin
+        assign a_rv = a;
+        assign b_rv = b;
+      end
+
+   always
+      begin
+        #1
+        $offset_comp_comp_cpp(a_rv,b_rv,y_rv,z_rv,compgain,hyst);
+      end
+
+endmodule
+

@@ -1,0 +1,11 @@
+module: first_order_lowpass
+parameters: double fp, double gain
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("K","1 + 1/(2*pi*fp)*s","K,fp,Ts",gain,fp,Ts);
+init: 
+filt.reset(0.0);
+code:
+filt.inp(in);
+out = filt.out;

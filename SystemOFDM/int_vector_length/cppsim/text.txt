@@ -1,0 +1,11 @@
+module: int_vector_length
+description:  outputs length of an integer vector input
+parameters:
+inputs: IntVector vec_in
+outputs:  double length
+static_variables:
+classes:
+init:
+  length = 1.0;
+code:
+  length = (double) vec_in.get_length();

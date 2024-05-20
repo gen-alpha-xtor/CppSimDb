@@ -1,0 +1,18 @@
+module: wb_integrate_and_dump
+parameters: 
+inputs: double in, double clk
+outputs: double out
+classes: EdgeDetect clkedge()
+static_variables: double integ_val
+init: 
+integ_val = 0.0;
+out = 0.0;
+code:
+integ_val += in;
+if (clkedge.inp(clk))
+   {
+    out = integ_val;
+    integ_val = 0.0;
+   }
+else
+    out = 0.0;

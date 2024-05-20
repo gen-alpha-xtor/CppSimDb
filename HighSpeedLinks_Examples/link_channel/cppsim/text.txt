@@ -1,0 +1,23 @@
+module: link_channel
+
+description:  loads the channel impulse response from link_channel.dat and 
+convolves it with incomming data stream - time step is Ts for now 
+- although could try using lower sampling rate since bandlimited channel 
+and then interpolate at the Rx
+
+parameters: 
+inputs: double channel_in
+outputs:  double channel_out
+static_variables:
+classes: List channel_taps() Filter filt_ch("1","1") 
+
+init:
+
+   channel_taps.load("link_channel.dat");
+   filt_ch.set(channel_taps,"1");
+   filt_ch.reset(0.0);
+
+code:
+filt_ch.inp(channel_in);
+channel_out=filt_ch.out;
+

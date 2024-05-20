@@ -1,0 +1,10 @@
+module: delay
+parameters: double nom_delay double control_gain
+inputs: double_interp in double control	
+outputs: double_interp out
+classes: Delay delay2(nom_delay/Ts)  
+static_variables:
+init:
+code:
+    delay2.inp(in,control*control_gain/Ts);
+    out = delay2.out;

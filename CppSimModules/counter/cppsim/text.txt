@@ -1,0 +1,12 @@
+module: counter
+parameters:
+inputs:  double in
+outputs:  int count
+classes: EdgeDetect edge1();
+static_variables:
+init: count=0;
+code:
+if (edge1.inp(in))
+{
+count=count+1;
+}

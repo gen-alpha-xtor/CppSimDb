@@ -1,0 +1,35 @@
+module: ofdm_channel_naftali_filter
+description: Naftali model of rayleigh fading channel 
+parameters: double t_rms, double ts
+inputs: double in_i, double in_q
+outputs: double out_i, double out_q
+static_variables: Vector vec_tmp_i, Vector vec_tmp_q, Vector vec_variance, int k, double var0, int i
+classes: Rand rand1("gauss") Rand rand2("gauss") List list_i() List list_q(), 
+        Filter filt_i1("1","1"), Filter filt_i2("1","1"), Filter filt_q1("1","1"), Filter filt_q2("1","1")
+init:    
+    k = (int) (4*t_rms/ts);     //number of samples in ch impulse response should ensure sufficient decay of impulse response tail  
+    vec_variance.set_length(k);
+    var0 = 1-exp(-ts/t_rms);   // to satisfy the condition that sum(all variances)=1 to ensure same avg received power
+    vec_tmp_i.set_length(k);
+    vec_tmp_q.set_length(k);
+    for(i=0; i<k; i++)
+    {
+        vec_variance.set_elem(i, var0*exp(-i*ts/t_rms));
+        vec_tmp_i.set_elem(i, sqrt(vec_variance.get_elem(i)/2) * rand1.inp());        
+        vec_tmp_q.set_elem(i, sqrt(vec_variance.get_elem(i)/2) * rand2.inp());
+        list_i.inp(vec_tmp_i.get_elem(i));
+        list_q.inp(vec_tmp_q.get_elem(i));
+    }
+    list_i.save("channel_naftali_h_i.dat");
+    list_q.save("channel_naftali_h_q.dat");
+    filt_i1.set(list_i,"1");
+    filt_i2.set(list_q,"1");
+    filt_q1.set(list_i,"1");
+    filt_q2.set(list_q,"1");
+code:
+    filt_i1.inp(in_i);
+    filt_i2.inp(in_q);
+    filt_q1.inp(in_q);
+    filt_q2.inp(in_i);
+    out_i = filt_i1.out - filt_i2.out;
+    out_q = filt_q1.out + filt_q2.out;

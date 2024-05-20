@@ -1,0 +1,11 @@
+module: vco_and_divider
+parameters: double freq double kvco
+inputs:  double vctrl double div
+outputs:  double_interp squareout double sineout
+static_variables:
+classes:  Vco vco("fc + Kv*x","fc,Kv,Ts",freq,kvco,Ts);
+init: 
+code:
+vco.inp(vctrl,div);
+squareout = vco.out;
+sineout = sin(vco.phase);

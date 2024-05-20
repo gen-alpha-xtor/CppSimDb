@@ -1,0 +1,66 @@
+module: ofdm_ifft_parallel_to_serial
+description:  takes in the ifft vectors and turns them into channel
+              streams (includes upsampling)
+parameters:
+inputs: Vector vec_ifft_i, Vector vec_ifft_q, double clk_frame,
+        double clk_channel
+outputs:  double serial_out_i, double serial_out_q
+static_variables: int cur_buf_index, int frame_flag, int cur_vec_index, int upsample
+classes: EdgeDetect clk_frame_edge(), EdgeDetect clk_channel_edge()
+         Vector vec_hold_i(), Vector vec_hold_q()
+init:
+   upsample = 1;  // this option is given if one wants to do upsampling 
+   cur_buf_index = 0;
+   cur_vec_index = 0;
+   frame_flag = -1;
+   serial_out_i = 0.0;
+   serial_out_q = 0.0;
+code:
+  int i;
+  if (clk_frame_edge.inp(clk_frame))
+     {
+     if (frame_flag == -1)
+        {
+        cur_buf_index = vec_ifft_i.get_length()*upsample;
+        printf("cur_buf_index = %d, and vec_ifft length =%d\n",  //TEST
+                cur_buf_index, vec_ifft_i.get_length());
+        }
+     frame_flag = 1;
+     }
+  if (clk_channel_edge.inp(clk_channel))
+     {
+     if (frame_flag == 1)
+        {
+         frame_flag = 0;
+         if (cur_buf_index != vec_ifft_i.get_length()*upsample)
+             {
+              printf("error in 'ofdm_ifft_parallel_to_serial_upsampler':  clk mismatch\n");
+              printf("   cur_buf_index should equal ifft.get_length()*upsample\n");
+              printf("   in this case, cur_buf_index = %d\n",cur_buf_index);
+              printf("   ifft.get_length() = %d, upsample = %d\n",
+                       vec_ifft_i.get_length(),upsample);
+              printf("   --> issue:  clk_channel is not properly scaled in\n");
+              printf("               in frequency compared to clk_frame\n");
+              exit(1);  
+             }
+         cur_buf_index = 0;
+         cur_vec_index = 0;
+         copy(vec_ifft_i,vec_hold_i);
+         copy(vec_ifft_q,vec_hold_q);
+        }
+     if (frame_flag == 0)
+        {
+         if (cur_buf_index % upsample == 0)
+            {
+            serial_out_i = vec_hold_i.get_elem(cur_vec_index); 
+            serial_out_q = vec_hold_q.get_elem(cur_vec_index);
+            cur_vec_index++;
+            }
+         else
+            {
+            serial_out_i = 0.0;
+            serial_out_q = 0.0;
+            }
+         cur_buf_index++;
+        }
+     }

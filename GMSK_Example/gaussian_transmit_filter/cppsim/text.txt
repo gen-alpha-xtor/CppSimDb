@@ -1,0 +1,44 @@
+module: gaussian_transmit_filter
+parameters: double h, int data_period, int filt_periods, double bt
+inputs: double in double clk
+outputs: double out
+classes: Filter filt("1","1"), List list1(), EdgeDetect clkedge()
+static_variables:
+init:
+if (fabs(bt) < 1e-12)
+   {
+    printf("error in 'gaussian_transmit_filter'\n");
+    printf("  parameter 'bt' must be nonzero!\n");
+    printf("  in this case, bt = %5.3e\n",bt);
+    exit(1);
+   }
+if (data_period <= 1)
+   {
+    printf("error in 'gaussian_transmit_filter'\n");
+    printf("  parameter 'data_period' must be > 1!\n");
+    printf("  in this case, data_period = %d\n",data_period);
+   }
+if (filt_periods < 1)
+   {
+    printf("error in 'gaussian_transmit_filter'\n");
+    printf("  parameter 'filt_periods' must be > 0!\n");
+    printf("  in this case, filt_periods = %d\n",filt_periods);
+   }
+double sigma, prefix, data_period_r, cur_val;
+int half_filter_length,i;
+data_period_r = (double) data_period;
+sigma = 1.178*data_period_r/(bt*2.0*pi);
+prefix = h/(2.0*sqrt(pi)*sigma);
+half_filter_length = (data_period*filt_periods)/2;
+for (i = -half_filter_length;i <= half_filter_length; i++)
+   {
+   cur_val = prefix*exp(-(((double) i)/sigma)*(((double) i)/sigma));
+   list1.inp(cur_val);
+   }
+filt.set(list1,"1");
+code:
+if (clkedge.inp(clk))
+   {
+   filt.inp(in);
+   out=filt.out;
+   }

@@ -1,0 +1,28 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module delay_intvector8(vec_out, vec_in);
+
+   parameter delay = 0;
+   input [31:0] vec_in;
+   output [31:0] vec_out;
+
+   integer vec_in_iv;
+   integer vec_out_iv;
+
+   assign vec_out = vec_out_iv;
+
+   initial
+      begin
+        assign vec_in_iv = vec_in;
+      end
+
+   always
+      begin
+        #1
+        $delay_intvector8_cpp(vec_in_iv,vec_out_iv,delay);
+      end
+
+endmodule
+

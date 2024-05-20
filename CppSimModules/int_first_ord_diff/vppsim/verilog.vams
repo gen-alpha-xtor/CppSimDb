@@ -1,0 +1,33 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module int_first_ord_diff(out, clk, in);
+
+   input clk;
+   input in;
+   output out;
+
+   wreal clk;
+   real clk_rv;
+   wreal in;
+   real in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign in_rv = in;
+      end
+
+   always
+      begin
+        #1
+        $int_first_ord_diff_cpp(clk_rv,in_rv,out_rv);
+      end
+
+endmodule
+

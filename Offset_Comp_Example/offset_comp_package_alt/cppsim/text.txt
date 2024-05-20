@@ -1,0 +1,14 @@
+module: offset_comp_package_alt
+parameters: double ro double rs double rl double cp double cl double lbw
+inputs: double in double inb
+outputs: double_interp out double_interp outb
+classes: 
+  Filter filt1("a*s^2+b*s+c","d*s^2+e*s+f","a,b,c,d,e,f,Ts",ro*cp*lbw,2*pi*(rs+lbw),(rs+2*ro)*4*pi*pi,rl*cl*lbw,2*pi*(rs+lbw),(rs+2*rl)*4*pi*pi,Ts);
+  Filter filt2("a*s^2+b*s+c","d*s^2+e*s+f","a,b,c,d,e,f,Ts",ro*cp*lbw,2*pi*(rs+lbw),(rs+2*ro)*4*pi*pi,rl*cl*lbw,2*pi*(rs+lbw),(rs+2*rl)*4*pi*pi,Ts);
+static_variables:
+init:
+code:
+ filt1.inp(in);
+ out = cp/cl*filt1.out;
+ filt2.inp(inb);
+ outb = cp/cl*filt2.out;

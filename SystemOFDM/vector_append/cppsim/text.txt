@@ -1,0 +1,22 @@
+module: vector_append
+description: append 2 vectors
+parameters: int length_out
+inputs: Vector vec_in1 Vector vec_in2
+outputs: Vector vec_out
+static_variables:
+classes: 
+set_output_vector_lengths:  vec_out=length_out
+init:
+    if (length_out != vec_in1.get_length()+vec_in2.get_length())
+        {
+        printf("error in 'vector_append': out_length must equal sum of lengths of vec_in1 and vec_in2\n");
+        printf("   -> in this case, length_out = %d\n", length_out);
+        printf("      while, length of vec_in1 = %d and vec_in2 = %d\n", vec_in1.get_length(), vec_in2.get_length());
+        exit(1);
+        }
+code:
+    int i;
+    for (i=0; i<vec_in1.get_length(); i++)
+            vec_out.set_elem(i, vec_in1.get_elem(i));
+    for (i=vec_in1.get_length(); i<vec_in1.get_length()+vec_in2.get_length(); i++)
+            vec_out.set_elem(i, vec_in2.get_elem(i-vec_in1.get_length()));

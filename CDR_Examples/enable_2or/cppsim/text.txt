@@ -1,0 +1,13 @@
+module: enable_2or
+parameters: 
+inputs: double in1, double in2
+outputs: double out
+classes: 
+static_variables: 
+init: 
+out = 0.0;
+code:
+if (in1 == 0.0 && in2 == 0.0)
+   out = 0.0;
+else
+   out = 1.0;

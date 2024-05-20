@@ -1,0 +1,12 @@
+module: latch1
+parameters: 
+inputs:  double_interp latch double_interp d 
+outputs:  double_interp q
+static_variables: double prev_q
+classes:  Latch lat1()
+init: 
+prev_q = -1.0;
+code:
+q = prev_q;
+lat1.inp(d,latch);
+prev_q = lat1.out; 

@@ -1,0 +1,30 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module ofdm_pilot_selector(sel, clk_frame);
+
+   parameter num_pilots = 0;
+   input clk_frame;
+   output sel;
+
+   wreal clk_frame;
+   real clk_frame_rv;
+   wreal sel;
+   real sel_rv;
+
+   assign sel = sel_rv;
+
+   initial
+      begin
+        assign clk_frame_rv = clk_frame;
+      end
+
+   always
+      begin
+        #1
+        $ofdm_pilot_selector_cpp(clk_frame_rv,sel_rv,num_pilots);
+      end
+
+endmodule
+

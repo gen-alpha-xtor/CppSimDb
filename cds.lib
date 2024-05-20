@@ -1,0 +1,13 @@
+DEFINE CDR_Examples ./CDR_Examples
+DEFINE CppSimModules ./CppSimModules
+DEFINE DFE_Example ./DFE_Example
+DEFINE DLL_Examples ./DLL_Examples
+DEFINE GMSK_Example ./GMSK_Example
+DEFINE HighSpeedLinks_Examples ./HighSpeedLinks_Examples
+DEFINE OCW_6776_Homework ./OCW_6776_Homework
+DEFINE OFDM_Example ./OFDM_Example
+DEFINE Offset_Comp_Example ./Offset_Comp_Example
+DEFINE OpticalPLL_Example ./OpticalPLL_Example
+DEFINE Synthesizer_Examples ./Synthesizer_Examples
+DEFINE SystemOFDM ./SystemOFDM
+DEFINE WBSynth_Example ./WBSynth_Example

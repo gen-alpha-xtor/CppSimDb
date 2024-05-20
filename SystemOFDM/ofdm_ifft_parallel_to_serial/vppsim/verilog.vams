@@ -1,0 +1,43 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module ofdm_ifft_parallel_to_serial(serial_out_i, serial_out_q, clk_channel, clk_frame, vec_ifft_i, vec_ifft_q);
+
+   input clk_channel;
+   input clk_frame;
+   input [31:0] vec_ifft_i;
+   input [31:0] vec_ifft_q;
+   output serial_out_i;
+   output serial_out_q;
+
+   wreal clk_channel;
+   real clk_channel_rv;
+   wreal clk_frame;
+   real clk_frame_rv;
+   integer vec_ifft_i_iv;
+   integer vec_ifft_q_iv;
+   wreal serial_out_i;
+   real serial_out_i_rv;
+   wreal serial_out_q;
+   real serial_out_q_rv;
+
+   assign serial_out_i = serial_out_i_rv;
+   assign serial_out_q = serial_out_q_rv;
+
+   initial
+      begin
+        assign clk_channel_rv = clk_channel;
+        assign clk_frame_rv = clk_frame;
+        assign vec_ifft_i_iv = vec_ifft_i;
+        assign vec_ifft_q_iv = vec_ifft_q;
+      end
+
+   always
+      begin
+        #1
+        $ofdm_ifft_parallel_to_serial_cpp(clk_channel_rv,clk_frame_rv,vec_ifft_i_iv,vec_ifft_q_iv,serial_out_i_rv,serial_out_q_rv);
+      end
+
+endmodule
+

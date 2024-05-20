@@ -1,0 +1,31 @@
+module: ofdm_rcosflt
+parameters: double bt, double data_period, double ts, int delay
+inputs: double in
+outputs: double out
+classes: Filter filt("1","1"), List list1()
+static_variables: 
+init: 
+    double data_period_r, r, cur_val, prefix;
+    int half_filter_length, i, f;
+    data_period_r = (double) data_period;
+    f = (int) (data_period_r/ts); // assuming ts=1, f=t_ch    
+    r = 0.1719; //roll-off factor =75/64 - 1
+    half_filter_length = delay*f;
+    for (i=-half_filter_length; i<=half_filter_length; i++)
+        {
+         if (i == 0)
+            {
+            cur_val = 1;
+            list1.inp(cur_val);
+            }
+         else
+            {
+            cur_val = ( sin(pi*i/f)/(pi*i/f) ) * ( cos(r*pi*i/f)/(1 - pow((2*r*i/f),2)) );
+            list1.inp(cur_val);
+            }
+        }
+    list1.save("filt_rcos.dat");
+    filt.set(list1,"1");
+code:
+    filt.inp(in);
+    out = filt.out;

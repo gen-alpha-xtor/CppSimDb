@@ -1,0 +1,215 @@
+module: ofdm_m_qam_generator
+description:  creates bpsk or {4, 16, 64, 256}-QAM symbols 
+parameters: int num_channels
+inputs: IntVector vec_bit_settings, IntVector vec_bits, double clk_frame
+outputs:  Vector vec_qam_i, Vector vec_qam_q, IntVector vec_bit_settings_out
+static_variables: double d_min;
+classes: EdgeDetect clk_frame_edge()
+set_output_vector_lengths:
+  vec_bit_settings_out=num_channels
+  vec_qam_i=num_channels
+  vec_qam_q=num_channels
+init: 
+  if (vec_bit_settings.get_length() != num_channels)
+     {
+      printf("error in 'ofdm_m_qam_generator': the length of vec_bit_settings is not\n");
+      printf("  equal to num_channels\n");
+      printf("  in this case, vec_bit_settings has length %d\n",
+                    vec_bit_settings.get_length());
+      printf("            and num_channels = %d\n",num_channels);
+      exit(1);
+     }
+  if (vec_bits.get_length() != num_channels)
+     {
+      printf("error in 'ofdm_m_qam_generator': the length of vec_bits is not\n");
+      printf("  equal to num_channels\n");
+      printf("  in this case, vec_bits has length %d\n",vec_bits.get_length());
+      printf("            and num_channels = %d\n",num_channels);
+      exit(1);
+     }
+   copy(vec_bit_settings,vec_bit_settings_out);
+code:
+  int i, num_bits, i_data_val, q_data_val, data_val;
+  double i_qam_val, q_qam_val;
+  if (clk_frame_edge.inp(clk_frame))
+     {
+      for (i = 0; i < vec_bit_settings.get_length(); i++)
+         {
+          num_bits = vec_bit_settings.get_elem(i);
+          data_val = vec_bits.get_elem(i);
+          if (num_bits == 1) // BPSK
+          {
+            vec_qam_q.set_elem(i,0);
+            if (data_val == 0)
+                vec_qam_i.set_elem(i, sqrt(2));
+            else if (data_val == 1)
+                vec_qam_i.set_elem(i, -sqrt(2));
+          }
+          else 
+          {
+            i_data_val = ofdm_extract_i_bits(num_bits,data_val);
+            q_data_val = ofdm_extract_q_bits(num_bits,data_val);
+            i_qam_val = ofdm_grey_encoder(num_bits/2,i_data_val);
+            q_qam_val = ofdm_grey_encoder(num_bits/2,q_data_val);
+            if (num_bits == 0) // don't send anything
+                 d_min = 0;
+            else if (num_bits == 2) // 4-QAM
+                 d_min = 2;
+            else if (num_bits == 4) // 16-QAM
+                 d_min =  0.6667; // 2/3
+            else if (num_bits == 6) // 64-QAM
+                d_min = 0.2857;  // 2/7
+            else if (num_bits == 8) // 256-QAM
+                d_min = 0.1333; // 2/15
+            else 
+                {
+                printf("error in 'ofdm_m_qam_generator': num_bits != 0,2,4,6,8 is not supported\n");
+                printf(" in this case, num_bits = %d\n", num_bits);
+                exit(1);
+                }
+            vec_qam_i.set_elem(i,d_min*i_qam_val);
+            vec_qam_q.set_elem(i,d_min*q_qam_val);
+        }
+         }
+      copy(vec_bit_settings,vec_bit_settings_out);
+     } 
+functions:
+int ofdm_extract_i_bits(int num_bits, int in_val)
+{
+int num_i_bits, mask, out;
+if (num_bits % 2 != 0)
+    {
+      printf("error in 'ofdm_extract_i_bits':  num_bits must be even!\n");
+      printf("  in this case, num_bits = %d\n",num_bits);
+      exit(1);
+    }
+num_i_bits = num_bits/2;
+mask = (1 << num_i_bits) - 1;
+out = mask & in_val;
+return(out);
+}
+int ofdm_extract_q_bits(int num_bits, int in_val)
+{
+int num_q_bits, mask, mask_full, mask_upper, out;
+if (num_bits % 2 != 0)
+    {
+      printf("error in 'ofdm_extract_q_bits':  num_bits must be even!\n");
+      printf("  in this case, num_bits = %d\n",num_bits);
+      exit(1);
+    }
+num_q_bits = num_bits/2;
+mask = (1 << num_q_bits) - 1;
+mask_full = (1 << num_bits) - 1;
+mask_upper = mask ^ mask_full;
+out = mask_upper & in_val;
+out = (out >> num_q_bits) & mask;
+return(out);
+}
+double ofdm_grey_encoder(int num_bits, int in_val)
+{
+double out;
+if (num_bits == 0)
+   out = 0.0;
+else if (num_bits == 1)
+   if (in_val == 0)
+      out = 1.0;
+   else if (in_val == 1)
+      out = -1.0;
+   else
+     {
+      printf("error in 'ofdm_grey_encoder':  in_val exceeds num_bits\n");
+      printf("   in this case, in_val = %d, num_bits = %d\n",in_val,num_bits);
+      exit(1);
+     }
+else if (num_bits == 2)
+  {
+   if (in_val == 0)
+      out = 3.0;
+   else if (in_val == 1)
+      out = 1.0;
+   else if (in_val == 2)
+      out = -3.0;
+   else if (in_val == 3)
+      out = -1.0;
+   else
+     {
+      printf("error in 'ofdm_grey_encoder':  in_val exceeds num_bits\n");
+      printf("   in this case, in_val = %d, num_bits = %d\n",in_val,num_bits);
+      exit(1);
+     }
+  }
+else if (num_bits == 3)
+  {
+   if (in_val == 0)
+      out = 7.0;
+   else if (in_val == 1)
+      out = 5.0;
+   else if (in_val == 2)
+      out = 1.0;
+   else if (in_val == 3)
+      out = 3.0;
+   else if (in_val == 4)
+      out = -7.0;
+   else if (in_val == 5)
+      out = -5.0;
+   else if (in_val == 6)
+      out = -1.0;
+   else if (in_val == 7)
+      out = -3.0;
+   else
+     {
+      printf("error in 'ofdm_grey_encoder':  in_val exceeds num_bits\n");
+      printf("   in this case, in_val = %d, num_bits = %d\n",in_val,num_bits);
+      exit(1);
+     }
+  }
+else if (num_bits == 4)
+  {
+   if (in_val == 0)
+      out = 15.0;
+   else if (in_val == 1)
+      out = 13.0;
+   else if (in_val == 2)
+      out = 9.0;
+   else if (in_val == 3)
+      out = 11.0;
+   else if (in_val == 4)
+      out = 1.0;
+   else if (in_val == 5)
+      out = 3.0;
+   else if (in_val == 6)
+      out = 7.0;
+   else if (in_val == 7)
+      out = 5.0;
+   else if (in_val == 8)
+      out = -15.0;
+   else if (in_val == 9)
+      out = -13.0;
+   else if (in_val == 10)
+      out = -9.0;
+   else if (in_val == 11)
+      out = -11.0;
+   else if (in_val == 12)
+      out = -1.0;
+   else if (in_val == 13)
+      out = -3.0;
+   else if (in_val == 14)
+      out = -7.0;
+   else if (in_val == 15)
+      out = -5.0;
+   else
+     {
+      printf("error in 'ofdm_grey_encoder':  in_val exceeds num_bits\n");
+      printf("   in this case, in_val = %d, num_bits = %d\n",in_val,num_bits);
+      exit(1);
+     }
+  }
+else
+   {
+     printf("error in 'ofdm_grey_encoder':  num_bits > 4 is not supported\n");
+     printf("   in this case, num_bits = %d\n",num_bits);
+     exit(1);
+   }
+out *= 0.5;
+return(out);
+}

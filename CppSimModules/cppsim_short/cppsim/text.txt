@@ -1,0 +1,7 @@
+module: cppsim_short
+inputs: bool in
+outputs: bool out
+init:
+out = 0;
+code:
+out = in;

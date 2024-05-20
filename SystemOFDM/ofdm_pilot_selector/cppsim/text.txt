@@ -1,0 +1,31 @@
+module: ofdm_pilot_selector
+description: used as selector for muxing between pilot and data vec_bit_settings
+parameters: int num_pilots
+inputs: double clk_frame
+outputs: double sel
+static_variables: int flag_pilot, int i;
+classes: EdgeDetect clk_frame_edge()
+init:
+    flag_pilot = 0;
+    sel = num_pilots == 0 ? 1.0 : 0.0;
+    i =  0;
+code:
+if (num_pilots != 0)
+{
+    if (clk_frame_edge.inp(clk_frame))
+    { 
+       if (flag_pilot == 0)
+        {
+            sel = 0.0;
+            i ++;
+            if (i == num_pilots)
+            {
+                flag_pilot = 1;
+            }
+        }
+        else 
+        {
+            sel = 1.0;
+        }
+    }
+ }

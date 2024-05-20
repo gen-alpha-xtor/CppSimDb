@@ -1,0 +1,42 @@
+module: trline_load2
+parameters: double zol, double c1, double c2, double l, double zor
+inputs: double eil
+outputs: double erl, double out
+classes: 
+Filter Gamma_l("1","1")
+Filter Line2Out("1","1");
+static_variables:
+init:
+if (zol+zor <= 0.0)
+{
+printf("Error in 'trline_load': zol+zor must be > 0!\n");
+printf("   in this case, zol = %5.3e, zor = %5.3e\n",zol,zor);
+exit(1);
+}
+if (c1 < 0.0)
+{
+printf("Error in 'trline_load': c1 must be >= 0!\n");
+printf("   in this case, c1 = %5.3e\n",c1);
+exit(1);
+}
+if (c2 < 0.0)
+{
+printf("Error in 'trline_load': c2 must be >= 0!\n");
+printf("   in this case, c2 = %5.3e\n",c2);
+exit(1);
+}
+if (l < 0.0)
+{
+printf("Error in 'trline_load': l must be >= 0!\n");
+printf("   in this case, l = %5.3e\n",l);
+exit(1);
+}
+
+Gamma_l.set("Zor-Zol+(L-(C1+C2)*Zor*Zol)*s+L*(Zor*C2-Zol*C1)*s^2-Zol*Zor*L*C1*C2*s^3","Zor+Zol+(L+(C1+C2)*Zor*Zol)*s+L*(Zor*C2+Zol*C1)*s^2+Zol*Zor*L*C1*C2*s^3","Ts,Zor,Zol,C1,C2,L",Ts,zor,zol,c1,c2,l); 
+Line2Out.set("Zor","Zor+L*s+(L*C2*Zor)*s^2","Ts,Zor,L,C2",Ts,zor,l,c2);
+
+code:
+Gamma_l.inp(eil);
+
+erl = Gamma_l.out;
+out = Line2Out.inp(eil+Gamma_l.out);

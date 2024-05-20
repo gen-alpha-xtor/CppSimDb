@@ -1,0 +1,11 @@
+//From constant
+module: vdd
+parameters: 
+inputs: 
+outputs:  double out
+static_variables:
+classes:
+init: 
+out = 1;
+code:
+out = 1;

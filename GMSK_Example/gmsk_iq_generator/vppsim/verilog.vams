@@ -1,0 +1,37 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module gmsk_iq_generator(iout, qout, clk, phase);
+
+   input clk;
+   input phase;
+   output iout;
+   output qout;
+
+   wreal clk;
+   real clk_rv;
+   wreal phase;
+   real phase_rv;
+   wreal iout;
+   real iout_rv;
+   wreal qout;
+   real qout_rv;
+
+   assign iout = iout_rv;
+   assign qout = qout_rv;
+
+   initial
+      begin
+        assign clk_rv = clk;
+        assign phase_rv = phase;
+      end
+
+   always
+      begin
+        #1
+        $gmsk_iq_generator_cpp(clk_rv,phase_rv,iout_rv,qout_rv);
+      end
+
+endmodule
+

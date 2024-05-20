@@ -1,0 +1,32 @@
+module: trline_section
+parameters: double gain, double delay
+inputs: double eil, double eir
+outputs: double erl, double err, double erl_p
+classes: 
+Filter delayr("1","1");
+Filter delayl("1","1");
+Filter delayx("1","1");
+static_variables:
+init:
+if (gain <= 0.0 || gain > 1.0)
+{
+printf("Error in 'trline_section': gain must be > 0 and <= 1!\n");
+printf("   in this case, gain = %5.3f\n",gain);
+exit(1);
+}
+if (int(floor(delay/Ts)) < 2)
+{
+printf("Error in 'trline_section': delay/Ts must be > 1!\n");
+printf("   in this case, delay = %5.3e, delay/Ts = %d\n",delay,int(floor(delay/Ts)));
+exit(1);
+}
+delayr.set("z^(-delay)","1","delay",(int) floor(delay/Ts));
+delayl.set("z^(-delay)","1","delay",(int) floor(delay/Ts-2));
+delayx.set("z^-1","1");
+code:
+delayr.inp(eil);
+delayl.inp(eir);
+delayx.inp(delayl.out);
+erl = gain*delayx.out;
+erl_p = gain*delayl.out;
+err = gain*delayr.out;

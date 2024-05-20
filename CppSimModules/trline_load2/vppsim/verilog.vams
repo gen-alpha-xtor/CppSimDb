@@ -1,0 +1,39 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module trline_load2(erl, out, eil);
+
+   parameter zol = 0.0000000000e+00;
+   parameter c1 = 0.0000000000e+00;
+   parameter c2 = 0.0000000000e+00;
+   parameter l = 0.0000000000e+00;
+   parameter zor = 0.0000000000e+00;
+   parameter sim_order = 0.0000000000e+00;
+   input eil;
+   output erl;
+   output out;
+
+   wreal eil;
+   real eil_rv;
+   wreal erl;
+   real erl_rv;
+   wreal out;
+   real out_rv;
+
+   assign erl = erl_rv;
+   assign out = out_rv;
+
+   initial
+      begin
+        assign eil_rv = eil;
+      end
+
+   always
+      begin
+        #1
+        $trline_load2_cpp(eil_rv,erl_rv,out_rv,zol,c1,c2,l,zor,sim_order);
+      end
+
+endmodule
+

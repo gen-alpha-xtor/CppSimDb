@@ -1,0 +1,29 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module link_channel(channel_out, channel_in);
+
+   input channel_in;
+   output channel_out;
+
+   wreal channel_in;
+   real channel_in_rv;
+   wreal channel_out;
+   real channel_out_rv;
+
+   assign channel_out = channel_out_rv;
+
+   initial
+      begin
+        assign channel_in_rv = channel_in;
+      end
+
+   always
+      begin
+        #1
+        $link_channel_cpp(channel_in_rv,channel_out_rv);
+      end
+
+endmodule
+

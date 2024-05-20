@@ -1,0 +1,9 @@
+module: constant_interp
+parameters: double consval
+inputs: 
+outputs:  double_interp out
+static_variables:
+classes:
+init: 
+code:
+out = consval > 0.0 ? 1.0 : -1.0;

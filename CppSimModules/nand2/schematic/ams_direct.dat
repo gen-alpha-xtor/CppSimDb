@@ -1,0 +1,17 @@
+$FILE_FORMAT_VERSION
+	Version 1.1;
+$END
+$VECTOR_PREFERENCE
+	descending;
+$END
+$TIMESTAMP
+	1130181592=13-CppSimModules3-inv;
+	1130547721=13-CppSimModules3-inv6-symbol;
+	1130181591=13-CppSimModules4-and2;
+	1130520967=13-CppSimModules4-and26-symbol;
+	-1=5-basic4-opin;
+	1034185461=5-basic4-opin6-symbol;
+	-1=5-basic4-ipin;
+	1034185458=5-basic4-ipin6-symbol;
+	1141232297=verilog.vams;
+$END

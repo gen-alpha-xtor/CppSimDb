@@ -1,0 +1,50 @@
+module: int_vector32_constant
+description:  creates output vector with 32 integer elements
+parameters:
+   int elem0, int elem1, int elem2, int elem3
+   int elem4, int elem5, int elem6, int elem7
+   int elem8, int elem9, int elem10, int elem11
+   int elem12, int elem13, int elem14, int elem15   
+   int elem16, int elem17, int elem18, int elem19
+   int elem20, int elem21, int elem22, int elem23
+   int elem24, int elem25, int elem26, int elem27
+   int elem28, int elem29, int elem30, int elem31   
+inputs: 
+outputs:  IntVector vec_out
+static_variables:
+classes: 
+set_output_vector_lengths: vec_out=32
+init:
+   vec_out.set_elem(0,elem0);
+   vec_out.set_elem(1,elem1);
+   vec_out.set_elem(2,elem2);
+   vec_out.set_elem(3,elem3);
+   vec_out.set_elem(4,elem4);
+   vec_out.set_elem(5,elem5);
+   vec_out.set_elem(6,elem6);
+   vec_out.set_elem(7,elem7);
+   vec_out.set_elem(8,elem8);
+   vec_out.set_elem(9,elem9);
+   vec_out.set_elem(10,elem10);
+   vec_out.set_elem(11,elem11);
+   vec_out.set_elem(12,elem12);
+   vec_out.set_elem(13,elem13);
+   vec_out.set_elem(14,elem14);
+   vec_out.set_elem(15,elem15);
+   vec_out.set_elem(16,elem16);
+   vec_out.set_elem(17,elem17);
+   vec_out.set_elem(18,elem18);
+   vec_out.set_elem(19,elem19);
+   vec_out.set_elem(20,elem20);
+   vec_out.set_elem(21,elem21);
+   vec_out.set_elem(22,elem22);
+   vec_out.set_elem(23,elem23);
+   vec_out.set_elem(24,elem24);
+   vec_out.set_elem(25,elem25);
+   vec_out.set_elem(26,elem26);
+   vec_out.set_elem(27,elem27);
+   vec_out.set_elem(28,elem28);
+   vec_out.set_elem(29,elem29);
+   vec_out.set_elem(30,elem30);
+   vec_out.set_elem(31,elem31);
+code:

@@ -1,0 +1,24 @@
+module: trline_vsource
+parameters: int stype, double freq, double zo, double zor
+            double amp, double offset
+inputs: double phase double outr double outr_p
+outputs: double out
+classes: SigGen siggen1("square",freq,Ts);
+static_variables: 
+init: 
+if (stype == 2)
+   siggen1.set("sine",freq,Ts);
+else if (stype == 3)
+   siggen1.set("prbs",freq,Ts);
+else if (stype == 4)
+   siggen1.set("impulse",freq,Ts);
+code:
+if (zor <= 0.0 || zo < 0.0)
+  {
+   printf("error in 'trline_vsource': zor must be > 0.0 and zo >= 0.0\n");
+   printf("  in this case, zor = %5.3e, zo = %5.3e\n",zor,zo);
+   exit(1);  
+  } 
+siggen1.inp(phase);
+out = zor/(zor+zo)*(amp/2.0*siggen1.out+offset);
+out += (zo-zor)/(zo+zor)*outr_p;

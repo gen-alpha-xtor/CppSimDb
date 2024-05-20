@@ -1,0 +1,21 @@
+module: int_vector8_constant
+description:  creates output vector with 8 integer elements
+parameters:
+   int elem0, int elem1, int elem2, int elem3
+   int elem4, int elem5, int elem6, int elem7
+inputs: 
+outputs:  IntVector vec_out
+static_variables:
+classes: 
+set_output_vector_lengths: vec_out=8
+//set_binary_vectors:  vec_out=8
+init:
+   vec_out.set_elem(0,elem0);
+   vec_out.set_elem(1,elem1);
+   vec_out.set_elem(2,elem2);
+   vec_out.set_elem(3,elem3);
+   vec_out.set_elem(4,elem4);
+   vec_out.set_elem(5,elem5);
+   vec_out.set_elem(6,elem6);
+   vec_out.set_elem(7,elem7);
+code:

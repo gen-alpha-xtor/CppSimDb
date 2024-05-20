@@ -1,0 +1,13 @@
+module: accumulator
+parameters: double kph
+inputs: double in double clk
+outputs: double out
+classes: Filter accum("1","1-z^-1"), EdgeDetect clkedge()
+static_variables:
+init:
+code:
+if (clkedge.inp(clk))
+  {
+  accum.inp(in);
+  out=kph*accum.out;
+  }

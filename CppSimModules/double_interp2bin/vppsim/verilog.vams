@@ -1,0 +1,29 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module double_interp2bin(out, in);
+
+   input in;
+   output out;
+
+   wreal in;
+   real in_rv;
+   wreal out;
+   real out_rv;
+
+   assign out = out_rv;
+
+   initial
+      begin
+        assign in_rv = in;
+      end
+
+   always
+      begin
+        #1
+        $double_interp2bin_cpp(in_rv,out_rv);
+      end
+
+endmodule
+

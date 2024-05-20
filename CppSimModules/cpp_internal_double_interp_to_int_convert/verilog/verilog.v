@@ -1,0 +1,35 @@
+module cpp_internal_double_interp_to_int_convert(in, out, update_in, update_out);
+
+   input [63:0] in;
+   input update_in;
+   output [31:0] out;
+   output update_out;
+
+   real in_rv;
+   reg update_out;
+   integer out_iv;
+
+   assign out = out_iv; 
+
+   initial
+     begin
+       out_iv = 32'd0;
+       assign in_rv = $bitstoreal(in);
+     end
+
+   always@update_in
+      begin
+         if (out_iv == 32'd0)
+            begin
+               if (in_rv > 0.0)
+                   out_iv = 32'd1;
+            end
+         else
+            begin
+               if (in_rv <= 0.0)
+                   out_iv = 32'd0;
+            end
+        update_out = update_in;
+      end
+
+endmodule

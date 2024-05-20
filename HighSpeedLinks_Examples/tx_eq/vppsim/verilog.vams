@@ -1,0 +1,36 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module tx_eq(tx_eq_out, clk_in, data_in, eq_settings_vec);
+
+   input clk_in;
+   input data_in;
+   input [31:0] eq_settings_vec;
+   output tx_eq_out;
+
+   wreal clk_in;
+   real clk_in_rv;
+   wreal data_in;
+   real data_in_rv;
+   integer eq_settings_vec_iv;
+   wreal tx_eq_out;
+   real tx_eq_out_rv;
+
+   assign tx_eq_out = tx_eq_out_rv;
+
+   initial
+      begin
+        assign clk_in_rv = clk_in;
+        assign data_in_rv = data_in;
+        assign eq_settings_vec_iv = eq_settings_vec;
+      end
+
+   always
+      begin
+        #1
+        $tx_eq_cpp(clk_in_rv,data_in_rv,eq_settings_vec_iv,tx_eq_out_rv);
+      end
+
+endmodule
+

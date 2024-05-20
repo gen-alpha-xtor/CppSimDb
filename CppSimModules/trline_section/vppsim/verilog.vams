@@ -1,0 +1,44 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module trline_section(erl, erl_p, err, eil, eir);
+
+   parameter gain = 0.0000000000e+00;
+   parameter delay = 0.0000000000e+00;
+   parameter sim_order = 0.0000000000e+00;
+   input eil;
+   input eir;
+   output erl;
+   output erl_p;
+   output err;
+
+   wreal eil;
+   real eil_rv;
+   wreal eir;
+   real eir_rv;
+   wreal erl;
+   real erl_rv;
+   wreal erl_p;
+   real erl_p_rv;
+   wreal err;
+   real err_rv;
+
+   assign erl = erl_rv;
+   assign erl_p = erl_p_rv;
+   assign err = err_rv;
+
+   initial
+      begin
+        assign eil_rv = eil;
+        assign eir_rv = eir;
+      end
+
+   always
+      begin
+        #1
+        $trline_section_cpp(eil_rv,eir_rv,erl_rv,erl_p_rv,err_rv,gain,delay,sim_order);
+      end
+
+endmodule
+

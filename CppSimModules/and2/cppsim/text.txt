@@ -1,0 +1,10 @@
+module: and2
+parameters: 
+inputs: double_interp a, double_interp b
+outputs:  double_interp y
+static_variables:
+classes: And and1()
+init: 
+code:
+and1.inp(a,b);
+y = and1.out;

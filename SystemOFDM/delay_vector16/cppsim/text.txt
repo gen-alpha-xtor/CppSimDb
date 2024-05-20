@@ -1,0 +1,71 @@
+module: delay_vector16
+description: design a time-delay filter for vectors: delta[n-delay]. delay must be an integer. 
+             delay each element of vector by "delay" samples
+             16 is the length of vector
+parameters: int delay 
+inputs: Vector vec_in
+outputs: Vector vec_out
+classes: Filter filt0("1-z^-1","1"), Filter filt1("1-z^-1","1"), Filter filt2("1-z^-1","1"), Filter filt3("1-z^-1","1")
+         Filter filt4("1-z^-1","1"), Filter filt5("1-z^-1","1"), Filter filt6("1-z^-1","1"), Filter filt7("1-z^-1","1")
+         Filter filt8("1-z^-1","1"), Filter filt9("1-z^-1","1"), Filter filt10("1-z^-1","1"), Filter filt11("1-z^-1","1")
+         Filter filt12("1-z^-1","1"), Filter filt13("1-z^-1","1"), Filter filt14("1-z^-1","1"), Filter filt15("1-z^-1","1")
+static_variables: 
+init:
+  if (vec_in.get_length() != 16)
+    {
+     printf("error in 'delay_vector16': input vector must have length 16\n");
+     printf("  in this case, input vector '%s' has length %d\n",
+     vec_in.get_name(),vec_in.get_length());
+     exit(1);
+    }
+  filt0.set("z^-no","1","no",delay);
+  filt1.set("z^-no","1","no",delay);
+  filt2.set("z^-no","1","no",delay);
+  filt3.set("z^-no","1","no",delay);
+  filt4.set("z^-no","1","no",delay);
+  filt5.set("z^-no","1","no",delay);
+  filt6.set("z^-no","1","no",delay);
+  filt7.set("z^-no","1","no",delay);
+  filt8.set("z^-no","1","no",delay);
+  filt9.set("z^-no","1","no",delay);
+  filt10.set("z^-no","1","no",delay);
+  filt11.set("z^-no","1","no",delay);
+  filt12.set("z^-no","1","no",delay);
+  filt13.set("z^-no","1","no",delay);
+  filt14.set("z^-no","1","no",delay);
+  filt15.set("z^-no","1","no",delay);
+set_output_vector_lengths:  vec_out=16
+code:
+  int i;
+  filt0.inp(vec_in.get_elem(0));
+  vec_out.set_elem(0,filt0.out);
+  filt1.inp(vec_in.get_elem(1));
+  vec_out.set_elem(1,filt1.out);
+  filt2.inp(vec_in.get_elem(2));
+  vec_out.set_elem(2,filt2.out);
+  filt3.inp(vec_in.get_elem(3));
+  vec_out.set_elem(3,filt3.out);
+  filt4.inp(vec_in.get_elem(4));
+  vec_out.set_elem(4,filt4.out);
+  filt5.inp(vec_in.get_elem(5));
+  vec_out.set_elem(5,filt5.out);
+  filt6.inp(vec_in.get_elem(6));
+  vec_out.set_elem(6,filt6.out);
+  filt7.inp(vec_in.get_elem(7));
+  vec_out.set_elem(7,filt7.out);
+  filt8.inp(vec_in.get_elem(8));
+  vec_out.set_elem(8,filt8.out);
+  filt9.inp(vec_in.get_elem(9));
+  vec_out.set_elem(9,filt9.out);
+  filt10.inp(vec_in.get_elem(10));
+  vec_out.set_elem(10,filt10.out);
+  filt11.inp(vec_in.get_elem(11));
+  vec_out.set_elem(11,filt11.out);
+  filt12.inp(vec_in.get_elem(12));
+  vec_out.set_elem(12,filt12.out);
+  filt13.inp(vec_in.get_elem(13));
+  vec_out.set_elem(13,filt13.out);
+  filt14.inp(vec_in.get_elem(14));
+  vec_out.set_elem(14,filt14.out);
+  filt15.inp(vec_in.get_elem(15));
+  vec_out.set_elem(15,filt15.out);

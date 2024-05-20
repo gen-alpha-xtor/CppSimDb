@@ -1,0 +1,10 @@
+module: leadlagfilter
+parameters: double fz, double fp, double gain
+inputs: double in
+outputs:  double out
+static_variables:
+classes: Filter filt("1+1/(2*pi*fz)s","C3*s + C3/(2*pi*fp)*s^2","C3,fz,fp,Ts",1/gain,fz,fp,Ts)
+init: 
+code:
+filt.inp(in);
+out = filt.out;

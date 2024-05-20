@@ -1,0 +1,14 @@
+module: wb_tristate_gated_noise
+parameters: double varpos double varneg
+inputs: double mux_in
+outputs:  double out
+static_variables:
+classes: Rand randg("gauss")
+init: 
+code:
+if (mux_in > -1.0e-3 && mux_in < 1.0e-3)
+   out = 0.0;
+else if (mux_in > 0.0)
+   out = sqrt(varpos/Ts)*randg.inp();
+else
+   out = sqrt(varneg/Ts)*randg.inp();

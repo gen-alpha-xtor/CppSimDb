@@ -1,0 +1,84 @@
+module: ofdm_onetap_equalizer
+description: The inputs are the pilot-estimated phase&amplitude introduced from input of IFFT to output of FFT 
+             and the signal from which we wish to remove (equalize) these
+             Hence, output = input/H which is a one-tap equalizer since we equalize each bin independently 
+parameters: int num_channels, int estimate 
+inputs: double clk_frame, Vector vec_h_i, Vector vec_h_q, Vector vec_in_i, Vector vec_in_q, IntVector vec_bit_settings 
+outputs: Vector vec_out_i, Vector vec_out_q
+classes: EdgeDetect clk_frame_edge(), List list_mag(), List list_phase()
+static_variables: Vector vec_phase_in, Vector vec_mag_in, Vector vec_mag_out, Vector vec_phase_out
+                  Vector vec_phase_h, Vector vec_mag_h, Vector vec_mag_h_tmp, Vector vec_phase_h_tmp
+set_output_vector_lengths:
+    vec_out_i=num_channels
+    vec_out_q=num_channels
+init:
+    if (vec_bit_settings.get_length() != num_channels) 
+       {
+       printf("error in 'ofdm_onetap_equalizer': the length\n");
+       printf("    of vec_bit_settings does not equal num_channels\n");
+       printf("    in this case, vec_bit_settings has length %d\n", 
+                    vec_bit_settings.get_length());
+       printf("    and num_channels = %d\n",num_channels);
+       exit(1);
+       }
+    if (vec_in_i.get_length() != vec_h_i.get_length())
+        {
+         printf("error in 'ofdm_onetap_equalizer': the length of the\n");
+         printf("       two input vectors are not the same\n");
+         printf("    in this case vec_in_i has length =%d, and vec_h_i has length=%d\n",
+                     vec_in_i.get_length(), vec_h_i.get_length());
+         exit(1);
+        } 
+    vec_phase_in.set_length(num_channels);
+    vec_mag_in.set_length(num_channels);
+    vec_mag_h.set_length(num_channels);
+    vec_phase_h.set_length(num_channels);
+    vec_mag_h_tmp.set_length(num_channels);
+    vec_phase_h_tmp.set_length(num_channels);
+    vec_mag_out.set_length(num_channels);
+    vec_phase_out.set_length(num_channels);
+    int i;
+    if (estimate == 0)  // use these values for channel estimation
+    {
+       list_mag.load("ch_estimator_h_mag.dat");
+       list_phase.load("ch_estimator_h_phase.dat");
+       list_mag.reset(); //reset read pointer to first element
+       list_phase.reset();
+       for (i = 0; i<num_channels; i++)     
+        {
+        	vec_mag_h_tmp.set_elem(i, list_mag.read());
+	        vec_phase_h_tmp.set_elem(i, list_phase.read());
+	    }
+    }
+code:
+  int i;
+  if (clk_frame_edge.inp(clk_frame))
+  {
+   for (i = 0; i<num_channels; i++)     
+   {
+	if (vec_bit_settings.get_elem(i) != 0)
+	{
+	    if (estimate == 0)
+	    {
+	        vec_mag_h.set_elem(i, vec_mag_h_tmp.get_elem(i));
+	        vec_phase_h.set_elem(i, vec_phase_h_tmp.get_elem(i));
+	    }
+	    else
+	    {
+            vec_phase_h.set_elem( i, atan2(vec_h_q.get_elem(i), vec_h_i.get_elem(i)) );
+            vec_mag_h.set_elem( i, sqrt(pow(vec_h_i.get_elem(i),2) + pow(vec_h_q.get_elem(i),2)) );
+        }
+        vec_phase_in.set_elem( i, atan2(vec_in_q.get_elem(i), vec_in_i.get_elem(i)) );
+        vec_mag_in.set_elem( i, sqrt(pow(vec_in_i.get_elem(i),2) + pow(vec_in_q.get_elem(i),2)) );
+        vec_phase_out.set_elem( i, vec_phase_in.get_elem(i) - vec_phase_h.get_elem(i) );
+        vec_mag_out.set_elem( i, vec_mag_in.get_elem(i)/vec_mag_h.get_elem(i) );
+        vec_out_i.set_elem( i, vec_mag_out.get_elem(i) * cos(vec_phase_out.get_elem(i)) );
+        vec_out_q.set_elem( i, vec_mag_out.get_elem(i) * sin(vec_phase_out.get_elem(i)) );
+        }
+	else
+	{
+	vec_out_i.set_elem(i, 0);
+	vec_out_q.set_elem(i, 0);
+	}	
+	}
+     }

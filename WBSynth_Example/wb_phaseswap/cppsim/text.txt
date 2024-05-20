@@ -1,0 +1,2 @@
+module: wb_phaseswap
+sim_order: xi4 xi5 xi7 xi3 xi2 xi6 xi1 xi0

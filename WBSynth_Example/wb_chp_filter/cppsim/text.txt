@@ -1,0 +1,11 @@
+module: wb_chp_filter
+parameters: double a1 double a0 double av double a2 double a3 double b0
+double b1 double b2 double b3
+inputs:  double in
+outputs:  double out
+classes: Filter rc("av*n3*s^3 + av*n2*s^2 + av*n1*s + av*n0","d3*s^3 + d2*s^2 + d1*s + d0","Ts,n0,n1,n2,n3,d0,d1,d2,d3,av",Ts,a0,a1,a2,a3,b0,b1,b2,b3,av)
+static_variables:
+init:
+code:
+rc.inp(in);
+out=rc.out;

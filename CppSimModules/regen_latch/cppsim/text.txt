@@ -1,0 +1,76 @@
+module: regen_latch
+parameters: double gain, double f_bw
+inputs: double d double_interp clk 
+outputs: double q
+classes: Filter filt_amp("k","1+1/wp*s","k,wp,Ts",gain,2*pi*f_bw,Ts);
+         EdgeDetect pos_edge()  EdgeDetect neg_edge()
+static_variables: int flag, double step_gain;
+init: 
+if (f_bw < 1e-12)
+  {
+   printf("error in 'regen_latch':  f_bw must be greater than 0!\n");
+   printf("  in this case, f_bw = %5.3e\n",f_bw);
+   exit(1);
+  }
+if (gain <= 0.0)
+  {
+   printf("error in 'regen_latch':  gain must be greater than 0!\n");
+   printf("  in this case, gain = %5.3e\n",gain);
+   exit(1);
+  }
+
+step_gain = Ts*gain*2*pi*f_bw;
+if (step_gain > 0.999) 
+  {
+   printf("error in 'regen_latch': gain*bandwidh product is\n");
+   printf(" too high for the given sample period Ts\n");
+   printf(" -> must have Ts*gain*2*pi*f_bw << 1.0\n");
+   printf("    in this case, it equals %5.3e\n",Ts*gain*2*pi*f_bw);
+   printf("    for gain = %5.3e, f_bw = %5.3e, Ts = %5.3e\n",
+               gain, f_bw, Ts);
+   printf("------> try decreasing Ts\n");
+   exit(1);
+  }
+
+flag = 1;
+filt_amp.reset(0.0);
+
+
+code:
+double beta;
+
+if (neg_edge.inp(-clk))
+  {
+   flag = 0;
+   beta = 0.5*(-clk+1.0);
+   q += q*beta*step_gain;
+  }
+else if (pos_edge.inp(clk))
+  {
+   flag = 1;
+   beta = 0.5*(clk+1.0);
+   filt_amp.reset(q + (d-q)*beta*step_gain);
+  }
+else
+  {
+   if (flag == 0)
+       q += q*step_gain;
+   else
+       filt_amp.inp(d);
+  }
+
+if (flag == 0)
+  {
+   if (q > 1.0)
+       q = 1.0;
+   else if (q < -1.0)
+       q = -1.0;
+  }   
+else
+  {
+   if (filt_amp.out > 1.0)
+       filt_amp.reset(1.0);
+   else if (filt_amp.out < -1.0)
+       filt_amp.reset(-1.0);
+   q = filt_amp.out;   
+  }

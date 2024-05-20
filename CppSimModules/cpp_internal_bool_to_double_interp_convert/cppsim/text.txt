@@ -1,0 +1,14 @@
+module: cpp_internal_bool_to_double_interp_convert
+parameters: 
+inputs: bool in
+outputs:  double_interp out
+static_variables:
+classes:
+init:
+out = -1.0; 
+code:
+if (in <= 0)
+   out = -1.0;
+else
+   out = 1.0;
+

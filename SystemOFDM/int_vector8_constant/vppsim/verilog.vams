@@ -1,0 +1,28 @@
+/////////// Auto-generated from CppSim module ///////////
+/////////// NOTE:  Do not modify this file! ///////////
+////// Instead, modify the associated CppSim module //////
+
+module int_vector8_constant(vec_out);
+
+   parameter elem0 = 0;
+   parameter elem1 = 0;
+   parameter elem2 = 0;
+   parameter elem3 = 0;
+   parameter elem4 = 0;
+   parameter elem5 = 0;
+   parameter elem6 = 0;
+   parameter elem7 = 0;
+   output [31:0] vec_out;
+
+   integer vec_out_iv;
+
+   assign vec_out = vec_out_iv;
+
+   always
+      begin
+        #1
+        $int_vector8_constant_cpp(vec_out_iv,elem0,elem1,elem2,elem3,elem4,elem5,elem6,elem7);
+      end
+
+endmodule
+

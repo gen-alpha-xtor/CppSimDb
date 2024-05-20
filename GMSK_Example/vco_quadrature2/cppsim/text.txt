@@ -1,0 +1,12 @@
+module: vco_quadrature2
+parameters: double freq double kvco double phase_adj
+inputs:  double vctrl
+outputs:  double cosout double sineout
+static_variables: double rad_phase_adj;
+classes:  Vco vco("fc + Kv*x","fc,Kv,Ts",freq,kvco,Ts);
+init: 
+rad_phase_adj = phase_adj*pi/180.0;
+code:
+vco.inp(vctrl);
+cosout = cos(vco.phase+rad_phase_adj);
+sineout = sin(vco.phase+rad_phase_adj);

@@ -1,0 +1,22 @@
+module: eq_setting_from_file
+
+description:  creates output vector with n elements  from a file 
+
+parameters: int num_tap
+
+inputs: 
+
+outputs:  Vector vec_out
+
+static_variables:
+
+classes: List list1()
+set_output_vector_lengths: vec_out=num_tap
+
+init:
+   list1.load("eq_taps.dat");     
+   list1.print("eq_taps_loaded");
+   copy(list1, vec_out);
+//    copy(vec_out, list1);
+
+code:
